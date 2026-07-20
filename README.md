@@ -148,7 +148,7 @@ cd _ARGUS_
 Move into the backend folder.
 
 ```bash
-cd backend
+cd Argus-backend
 ```
 
 ---
