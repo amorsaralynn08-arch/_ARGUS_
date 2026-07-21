@@ -31,6 +31,9 @@ class User(AbstractUser):
     company=models.ForeignKey(Company,
                               on_delete=models.CASCADE,
                               related_name= "users",
+                              null=True,
+                              blank=True,
+
                               )
     created_at=models.DateTimeField(auto_now_add=True)
 
