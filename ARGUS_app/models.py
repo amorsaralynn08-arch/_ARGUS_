@@ -39,4 +39,33 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.username} ({self.role})"
+    
+class Vehicle(models.Model):
+    registration_number=models.CharField(max_length=20,unique=True)
+    manufacturer = models.CharField(max_length=20)
+    model=models.CharField(max_length=20)
+    year = models.PositiveIntegerField()
+    vin = models.CharField(max_length=17,unique=True)
+    company = models.ForeignKey(Company,on_delete=models.CASCADE,related_name="vehicles")
+    driver = models.ForeignKey(User,
+                               on_delete=models.SET_NULL,
+                               null=True,
+                               blank=True,
+                               related_name="vehicles"
+                               )
+    class Status(models.TextChoices):
+        ACTIVE = "ACTIVE" , "Active"
+        MAINTENANCE = "MAINTENANCE" , "Maintenance"
+        OFFLINE = "OFFLINE" , "Offline"
+        CRITICAL = "CRITICAL" , "Critical"
+
+    status = models.CharField(max_length=20,
+                              choices=Status.choices,
+                              default=Status.ACTIVE
+    )
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.registration_number
+
 
