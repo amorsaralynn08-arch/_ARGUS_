@@ -69,3 +69,16 @@ class Vehicle(models.Model):
         return self.registration_number
 
 
+class SensorReading(models.Model):
+    vehicle = models.ForeignKey(Vehicle,
+                                on_delete=models.CASCADE,
+                                related_name="sensor_readings"
+                                )
+    temperature = models.FloatField()
+    vibration = models.FloatField()
+    potentiometer_value=models.IntegerField()
+    health_score = models.DecimalField(max_digits = 5, decimal_places=2)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.vehicle.registration_number} -- {self.created_at}"
