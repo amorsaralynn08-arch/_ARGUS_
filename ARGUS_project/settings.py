@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'Argus_app',
+    'ARGUS_app',
     'drf_spectacular',
     
 ]
