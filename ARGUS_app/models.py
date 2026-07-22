@@ -82,3 +82,31 @@ class SensorReading(models.Model):
 
     def __str__(self):
         return f"{self.vehicle.registration_number} -- {self.created_at}"
+
+class Alert(models.Model):
+
+    class AlertType(models.TextChoices):
+        HIGH_TEMPERATURE = "HIGH_TEMPERATURE" , "High Temperature"
+        HIGH_VIBRATION = "HIGH_VIBRATION" , "High Temperature"
+        LOW_HEALTH_SCORE = "LOW_HEALTH_SCORE" , "Low Health Score"
+
+    class Severity(models.TextChoices):
+        WARNING = "WARNING" , "Warning"
+        CRITICAL= "CRITICAL" , "Critical"
+
+    vehicle = models.ForeignKey(Vehicle,
+                                on_delete=models.CASCADE,
+                                related_name="alerts"
+    )
+    sensor_reading = models.ForeignKey(
+        SensorReading,
+        on_delete=models.CASCADE,
+        related_name="alerts"
+    )
+    alert_type = models.CharField(max_length=30 , choices=Severity.choices)
+    message = models.TextField()
+    is_resolved = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.vehicle.registration_number} -- {self.alert_type}"
