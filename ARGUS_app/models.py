@@ -94,15 +94,16 @@ class Alert(models.Model):
         WARNING = "WARNING" , "Warning"
         CRITICAL= "CRITICAL" , "Critical"
 
-    vehicle = models.ForeignKey(Vehicle,
-                                on_delete=models.CASCADE,
-                                related_name="alerts"
-    )
+    
     sensor_reading = models.ForeignKey(
         SensorReading,
         on_delete=models.CASCADE,
         related_name="alerts"
     )
+    severity = models.CharField(
+    max_length=20,
+    choices=Severity.choices
+                           )
     alert_type = models.CharField(max_length=30 , choices=AlertType.choices)
     message = models.TextField()
     is_resolved = models.BooleanField(default=False)
