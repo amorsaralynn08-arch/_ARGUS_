@@ -4,12 +4,18 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import SensorReadingSerializer
 from .serializers import AlertSerializer
+from rest_framework.permissions import IsAuthenticated
+
+
+
 
 
 # Create your views here.
 class SensorReadingListCreateView(generics.ListCreateAPIView):
     queryset = SensorReading.objects.all()
     serializer_class = SensorReadingSerializer  
+    permission_classes = [IsAuthenticated]
+
 
 class AlertViewSet(viewsets.ModelViewSet):
     queryset = Alert.objects.all()
