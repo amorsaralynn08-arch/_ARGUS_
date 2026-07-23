@@ -5,7 +5,7 @@ from .models import *
 from .serializers import SensorReadingSerializer
 from .serializers import AlertSerializer
 from rest_framework.permissions import IsAuthenticated
-
+from .permissions import isAdminorFleetManager
 
 
 
@@ -14,7 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 class SensorReadingListCreateView(generics.ListCreateAPIView):
     queryset = SensorReading.objects.all()
     serializer_class = SensorReadingSerializer  
-    permission_classes = [IsAuthenticated]
+    permission_classes = [isAdminorFleetManager]
 
 
 class AlertViewSet(viewsets.ModelViewSet):

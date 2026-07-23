@@ -11,6 +11,9 @@ class Company(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
+    class Meta:
+        ordering = ["name"]
+
 
     def __str__(self):
         return self.name
@@ -42,8 +45,8 @@ class User(AbstractUser):
     
 class Vehicle(models.Model):
     registration_number=models.CharField(max_length=20,unique=True)
-    manufacturer = models.CharField(max_length=20)
-    model=models.CharField(max_length=20)
+    manufacturer = models.CharField(max_length=50)
+    model=models.CharField(max_length=50)
     year = models.PositiveIntegerField()
     vin = models.CharField(max_length=17,unique=True)
     company = models.ForeignKey(Company,on_delete=models.CASCADE,related_name="vehicles")
@@ -78,7 +81,10 @@ class SensorReading(models.Model):
     vibration = models.FloatField()
     potentiometer_value=models.IntegerField()
     
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True,db_index=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.vehicle.registration_number} -- {self.created_at}"
@@ -104,10 +110,17 @@ class Alert(models.Model):
     max_length=20,
     choices=Severity.choices
                            )
-    alert_type = models.CharField(max_length=30 , choices=AlertType.choices)
+    alert_type = models.CharField(max_length=50 , choices=AlertType.choices)
     message = models.TextField()
     is_resolved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
+    @property
+    def vehicle(self):
+        return self.sensor_reading.vehicle
+    
+    class Meta:
+        ordering = ["-created_at"]
 
     def __str__(self):
         return f"{self.vehicle.registration_number} -- {self.alert_type}"
