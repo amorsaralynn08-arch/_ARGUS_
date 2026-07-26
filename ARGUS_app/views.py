@@ -3,7 +3,7 @@ from rest_framework import viewsets,mixins
 from .models import SensorReading , Alert
 from .serializers import SensorReadingSerializer
 from .serializers import AlertSerializer
-from .permissions import IsAdminOrFleetManager
+from .permissions import CanManageAlerts , CanViewSensorReadings
 
 
 
@@ -19,10 +19,10 @@ class SensorReadingView(
     
     queryset = SensorReading.objects.all()
     serializer_class = SensorReadingSerializer  
-    permission_classes = [IsAdminOrFleetManager]
+    permission_classes = [CanViewSensorReadings]
 
 
 class AlertViewSet(viewsets.ModelViewSet):
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
-    permission_classes = [IsAdminOrFleetManager]
+    permission_classes = [CanManageAlerts]
