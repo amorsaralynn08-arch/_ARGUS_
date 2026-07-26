@@ -1,11 +1,10 @@
-from django.shortcuts import render
+
 from rest_framework import generics
 from rest_framework import viewsets
 from .models import *
 from .serializers import SensorReadingSerializer
 from .serializers import AlertSerializer
-from rest_framework.permissions import IsAuthenticated
-from .permissions import isAdminorFleetManager
+from .permissions import IsAdminOrFleetManager
 
 
 
@@ -14,7 +13,7 @@ from .permissions import isAdminorFleetManager
 class SensorReadingListCreateView(generics.ListCreateAPIView):
     queryset = SensorReading.objects.all()
     serializer_class = SensorReadingSerializer  
-    permission_classes = [isAdminorFleetManager]
+    permission_classes = [IsAdminOrFleetManager]
 
 
 class AlertViewSet(viewsets.ModelViewSet):
