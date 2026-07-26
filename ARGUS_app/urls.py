@@ -5,7 +5,7 @@ from rest_framework_simplejwt.views import (TokenObtainPairView , TokenRefreshVi
 
 
 router = DefaultRouter()
-router.register("alerts" ,AlertViewSet)
+router.register(r"alerts" ,AlertViewSet,basename="alert",)
 
 urlpatterns = [
     path("sensor-readings/",SensorReadingListCreateView.as_view(),name="sensor-readings"),

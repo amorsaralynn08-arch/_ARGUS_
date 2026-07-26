@@ -19,3 +19,4 @@ class SensorReadingListCreateView(generics.ListCreateAPIView):
 class AlertViewSet(viewsets.ModelViewSet):
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
+    permission_classes = [IsAdminOrFleetManager]
