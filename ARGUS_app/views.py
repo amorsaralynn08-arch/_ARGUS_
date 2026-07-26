@@ -22,7 +22,12 @@ class SensorReadingView(
     permission_classes = [CanViewSensorReadings]
 
 
-class AlertViewSet(viewsets.ModelViewSet):
+class AlertViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
     permission_classes = [CanManageAlerts]
