@@ -1,7 +1,6 @@
 
-from rest_framework import generics
-from rest_framework import viewsets
-from .models import *
+from rest_framework import viewsets,mixins
+from .models import SensorReading , Alert
 from .serializers import SensorReadingSerializer
 from .serializers import AlertSerializer
 from .permissions import IsAdminOrFleetManager
@@ -10,7 +9,14 @@ from .permissions import IsAdminOrFleetManager
 
 
 # Create your views here.
-class SensorReadingListCreateView(generics.ListCreateAPIView):
+class SensorReadingView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+
+):
+    
     queryset = SensorReading.objects.all()
     serializer_class = SensorReadingSerializer  
     permission_classes = [IsAdminOrFleetManager]
