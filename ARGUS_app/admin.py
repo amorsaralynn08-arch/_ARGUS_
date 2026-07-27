@@ -12,6 +12,19 @@ class CompanyAdmin(admin.ModelAdmin):
     readonly_fields = ("created_at")
     
 admin.site.register(User, UserAdmin)
-admin.site.register(Vehicle)
+@admin.register(Vehicle)
+class VehicleAdmin(admin.Model.Admin):
+    list_display = (
+        "registration_number",
+        "manufacturer",
+        "model",
+        'company',
+        "driver",
+        "status",
+    )
+    search_fields = ("registration_number","manufacturer","model","vin","driver__username",)
+    list_filter = ("status","company","manufacturer")
+    ordering = ("registration_number")
+    readonly_fields = ("created_at")
 admin.site.register(SensorReading)
 admin.site.register(Alert)
