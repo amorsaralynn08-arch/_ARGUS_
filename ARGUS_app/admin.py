@@ -11,7 +11,29 @@ class CompanyAdmin(admin.ModelAdmin):
     ordering = ("name",)
     readonly_fields = ("created_at",)
     
-admin.site.register(User, UserAdmin)
+@admin.register(User)
+class CustomUserAdmin(UserAdmin):
+    list_display = (
+    "username",
+    "email",
+    "role",
+    "company",
+    "is_staff",
+    "is_active",
+)
+    search_fields = ( "username", "email","company__name",) 
+    list_filter = ("role","company","is_staff","is_active",)
+    fieldsets = UserAdmin.fieldsets + (("ARGUS Information",{"fields": (
+                                                                         "role",
+                                                                         "company",
+                                                                         "phone_number",
+                                                                         )
+        },
+    ),
+)
+
+
+
 @admin.register(Vehicle)
 class VehicleAdmin(admin.ModelAdmin):
     list_display = (
