@@ -39,4 +39,19 @@ class SensorReadingAdmin(admin.ModelAdmin):
     list_filter = ("vehicle","created_at",)
     ordering = ("-created_at",)
     readonly_fields = ("created_at",)
-admin.site.register(Alert)
+@admin.register(Alert)
+class AlertAdmin(admin.ModelAdmin):
+    list_display = (
+        "vehicle",
+        "alert_type",
+        "severity",
+        "is_resolved",
+        "created_at",
+    )
+
+    search_fields = ("sensor_reading__vehicle__registration_number","alert_type",)
+    list_filter = ( "severity", "alert_type","is_resolved", "created_at",)
+    ordering = ( "-created_at",)
+    readonly_fields = ( "created_at",)
+       
+    
