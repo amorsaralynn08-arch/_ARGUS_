@@ -28,6 +28,7 @@ class AlertViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
+    
     queryset = Alert.objects.all()
     serializer_class = AlertSerializer
     permission_classes = [CanManageAlerts]
