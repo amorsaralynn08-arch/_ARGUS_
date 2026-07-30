@@ -1,7 +1,7 @@
 
 from rest_framework import viewsets,mixins
-from .models import SensorReading , Alert
-from .serializers import SensorReadingSerializer
+from .models import SensorReading , Alert , Vehicle
+from .serializers import SensorReadingSerializer,VehicleSerializer
 from .serializers import AlertSerializer, ChangePasswordSerializer
 from .permissions import CanManageAlerts , CanViewSensorReadings
 from .utils import send_test_email
@@ -65,3 +65,17 @@ class ChangePasswordView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+class VehicleViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+    queryset = Vehicle.objects.all()
+    serializer_class = VehicleSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(company=self.request.user.company)
