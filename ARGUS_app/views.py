@@ -3,7 +3,7 @@ from rest_framework import viewsets,mixins
 from .models import SensorReading , Alert , Vehicle
 from .serializers import SensorReadingSerializer,VehicleSerializer
 from .serializers import AlertSerializer, ChangePasswordSerializer
-from .permissions import CanManageAlerts , CanViewSensorReadings
+from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles
 from .utils import send_test_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -76,7 +76,7 @@ class VehicleViewSet(
     def get_queryset(self):
      return Vehicle.objects.filter(company=self.request.user.company)
     serializer_class = VehicleSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CanManageVehicles]
 
     def perform_create(self, serializer):
         serializer.save(company=self.request.user.company)
