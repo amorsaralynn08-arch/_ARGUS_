@@ -31,5 +31,5 @@ class CanManageVehicles(BasePermission):
     def has_permission(self, request, view):
         return (
             request.user.is_authenticated
-            and request.user.role == User.FLEET_MANAGER
+            and request.user.role == User.Role.FLEET_MANAGER
         )
