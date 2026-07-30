@@ -1,7 +1,7 @@
 
 from rest_framework import viewsets,mixins
 from .models import SensorReading , Alert , Vehicle
-from .serializers import SensorReadingSerializer,VehicleSerializer
+from .serializers import SensorReadingSerializer,VehicleSerializer,ProfileSerializer
 from .serializers import AlertSerializer, ChangePasswordSerializer
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles
 from .utils import send_test_email
@@ -80,3 +80,10 @@ class VehicleViewSet(
 
     def perform_create(self, serializer):
         serializer.save(company=self.request.user.company)
+
+class ProfileView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        serializer = ProfileSerializer(request.user)
+        return Response(serializer.data)
