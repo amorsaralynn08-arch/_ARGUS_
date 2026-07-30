@@ -73,7 +73,8 @@ class VehicleViewSet(
     mixins.UpdateModelMixin,
     viewsets.GenericViewSet,
 ):
-    queryset = Vehicle.objects.all()
+    def get_queryset(self):
+     return Vehicle.objects.filter(company=self.request.user.company)
     serializer_class = VehicleSerializer
     permission_classes = [IsAuthenticated]
 
