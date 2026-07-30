@@ -56,3 +56,8 @@ class ChangePasswordView(APIView):
             return Response({
                 "old_password":"Incorrect password."},
                 status=status.HTTP_400_BAD_REQUEST,)
+
+        user.set_password(serializer.validated_data["new_password"])
+        user.save()
+        return Response({"message":"Password changed successfully."},status=status.HTTP_200_OK,)
+    
