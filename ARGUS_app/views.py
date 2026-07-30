@@ -49,3 +49,10 @@ class ChangePasswordView(APIView):
 
         if serializer.is_valid():
             user = request.user
+
+        if not user.check_password(
+            serializer.validated_data["old_password"]
+        ):
+            return Response({
+                "old_password":"Incorrect password."},
+                status=status.HTTP_400_BAD_REQUEST,)
