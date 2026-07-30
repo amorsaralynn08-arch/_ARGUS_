@@ -1,5 +1,5 @@
 from django.urls import path , include
-from .views import SensorReadingView,AlertViewSet,TestEmailView,ChangePasswordView
+from .views import SensorReadingView,AlertViewSet,TestEmailView,ChangePasswordView,VehicleViewSet
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (TokenObtainPairView , TokenRefreshView)
 from django.contrib.auth.views import (PasswordResetView,PasswordResetDoneView,PasswordResetConfirmView,PasswordResetCompleteView)
@@ -8,6 +8,7 @@ from django.contrib.auth.views import (PasswordResetView,PasswordResetDoneView,P
 router = DefaultRouter()
 router.register(r"alerts" , AlertViewSet , basename="alert",)
 router.register(r"sensor-readings",SensorReadingView,basename="sensor-reading")
+router.register(r"vehicles",VehicleViewSet,basename="vehicle",)
 
 
 urlpatterns = [
