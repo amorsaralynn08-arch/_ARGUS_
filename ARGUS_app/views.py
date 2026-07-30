@@ -4,7 +4,7 @@ from .models import SensorReading , Alert , Vehicle
 from .serializers import SensorReadingSerializer,VehicleSerializer,ProfileSerializer
 from .serializers import AlertSerializer, ChangePasswordSerializer
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles
-from .utils import send_test_email
+from .utils import send_test_email,send_password_changed_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -59,6 +59,7 @@ class ChangePasswordView(APIView):
 
             user.set_password(serializer.validated_data["new_password"])
             user.save()
+            send_password_changed_email(user)
             return Response({"message":"Password changed successfully."},status=status.HTTP_200_OK,)
        
         return Response(
