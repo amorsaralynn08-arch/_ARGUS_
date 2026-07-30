@@ -57,3 +57,9 @@ class ChangePasswordSerializer(serializers.Serializer):
            )
 
         return attrs
+
+class VehicleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vehicle
+        fields = "__all__"
+        read_only_fields = ["company"]
