@@ -11,3 +11,9 @@ def send_test_email(recipient_email):
     email.send()
     
     
+def send_password_changed_email(user):
+    subject = "ARGUS Password Changed Successfully"
+    html_content = render_to_string("emails/password_changed.html",{"user": user})
+    email = EmailMultiAlternatives(subject,"",settings.EMAIL_HOST_USER,[user.email],)
+    email.attach_alternative(html_content,"text/html")
+    email.send()
