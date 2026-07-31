@@ -262,65 +262,6 @@ source venv/bin/activate
 python -m pip install --upgrade pip
 ```
 
----
-
-# Install Project Dependencies
-
-Install Django:
-
-```bash
-pip install django
-```
-
-Install Django REST Framework:
-
-```bash
-pip install djangorestframework
-```
-
-Install PostgreSQL database adapter:
-
-```bash
-pip install psycopg2-binary
-```
-
-Install CORS support:
-
-```bash
-pip install django-cors-headers
-```
-
-Install environment variable support:
-
-```bash
-pip install python-decouple
-```
-
-Install API documentation support:
-
-```bash
-pip install drf-spectacular
-```
-
-Install filtering support:
-
-```bash
-pip install django-filter
-```
-
----
-
-# Install All Dependencies at Once
-
-Alternatively, install everything together:
-
-```bash
-pip install django djangorestframework psycopg2-binary django-cors-headers python-decouple drf-spectacular django-filter
-```
-
----
-
-# Save Installed Packages
 
 Generate the requirements file.
 
@@ -328,7 +269,7 @@ Generate the requirements file.
 pip freeze > requirements.txt
 ```
 
-Install from the requirements file.
+Install dependancies from the requirements file.
 
 ```bash
 pip install -r requirements.txt
@@ -429,19 +370,7 @@ http://127.0.0.1:8000/api/schema/
 
 ---
 
-# API Endpoints
 
-Example endpoints that will be implemented throughout the project.
-
-```
-GET    /api/sensors/
-GET    /api/readings/
-GET    /api/health/
-GET    /api/alerts/
-
-POST   /api/readings/
-POST   /api/alerts/
-```
 
 ---
 
@@ -466,7 +395,11 @@ The frontend directory and setup instructions will be added as development progr
 7. Users monitor system status from the dashboard.
 
 ---
+##if you wish to clone or contribute to the project
+```
+https://github.com/amorsaralynn08-arch/_ARGUS_/
 
+```
 
 
 Amor
