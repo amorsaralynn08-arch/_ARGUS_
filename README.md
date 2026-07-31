@@ -395,7 +395,7 @@ The frontend directory and setup instructions will be added as development progr
 7. Users monitor system status from the dashboard.
 
 ---
-##if you wish to clone or contribute to the project
+## if you wish to clone or contribute to the project
 ```
 https://github.com/amorsaralynn08-arch/_ARGUS_/
 
