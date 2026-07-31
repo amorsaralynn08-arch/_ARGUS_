@@ -14,8 +14,6 @@ router.register(r"vehicles",VehicleViewSet,basename="vehicle",)
 urlpatterns = [
     
     path("", include(router.urls)),
-    path("token/",TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("test-email/", TestEmailView.as_view(), name="test-email"),
     path("password-reset/",PasswordResetView.as_view(),name="password-reset"),
     path("password-reset/done/",PasswordResetDoneView.as_view(),name="password_reset_done",),
