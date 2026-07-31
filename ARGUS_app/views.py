@@ -19,7 +19,8 @@ class SensorReadingView(
 
 ):
     
-    queryset = SensorReading.objects.all()
+    def get_queryset(self):
+     return SensorReading.objects.filter(vehicle__company=self.request.user.company)
     serializer_class = SensorReadingSerializer  
     permission_classes = [CanViewSensorReadings]
 
@@ -31,7 +32,8 @@ class AlertViewSet(
     viewsets.GenericViewSet,
 ):
     
-    queryset = Alert.objects.all()
+    def get_queryset(self):
+     return SensorReading.objects.filter(vehicle__company=self.request.user.company)
     serializer_class = AlertSerializer
     permission_classes = [CanManageAlerts]
 
@@ -40,6 +42,8 @@ class TestEmailView(APIView):
         send_test_email(request.user.email)
 
         return Response({"message":"Test email sent successfully"},status=status.HTTP_200_OK)
+    permission_classes = [IsAuthenticated]
+    
 
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]

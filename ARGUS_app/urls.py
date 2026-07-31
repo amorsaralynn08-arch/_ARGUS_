@@ -21,6 +21,8 @@ urlpatterns = [
     path("reset/done/",PasswordResetCompleteView.as_view(),name="password_reset_complete",),
     path("change-password/",ChangePasswordView.as_view(),name="change-password",),
     path("profile/", ProfileView.as_view(), name="profile"),
+       path("token/",TokenObtainPairView.as_view(), name='token_obtain_pair'),
+            path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
 
 
