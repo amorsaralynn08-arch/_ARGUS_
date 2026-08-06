@@ -60,10 +60,34 @@ class ChangePasswordSerializer(serializers.Serializer):
         return attrs
 
 class VehicleSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Vehicle
         fields = "__all__"
         read_only_fields = ["company"]
+
+    def validate_driver(self, value):
+        """
+        Ensure the assigned driver belongs to the same company
+        and has the DRIVER role.
+        """
+
+        if value is None:
+            return value
+
+        request = self.context["request"]
+
+        if value.role != User.Role.DRIVER:
+            raise serializers.ValidationError(
+                "The selected user is not a driver."
+            )
+
+        if value.company != request.user.company:
+            raise serializers.ValidationError(
+                "You can only assign drivers from your company."
+            )
+
+        return value
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
