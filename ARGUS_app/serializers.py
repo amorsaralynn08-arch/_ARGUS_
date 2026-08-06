@@ -145,3 +145,20 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
         return user
+
+class CompanySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Company
+        fields = [
+            "id",
+            "name",
+            "email",
+            "phone_number",
+            "address",
+            "created_at",
+            "is_active",
+        ]
+        read_only_fields = [
+            "created_at",
+            "is_active",
+        ]
