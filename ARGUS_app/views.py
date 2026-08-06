@@ -1,8 +1,14 @@
 
 from rest_framework import viewsets,mixins
 from .models import SensorReading , Alert , Vehicle
-from .serializers import SensorReadingSerializer,VehicleSerializer,ProfileSerializer
-from .serializers import AlertSerializer, ChangePasswordSerializer
+from .serializers import (
+    SensorReadingSerializer,
+    VehicleSerializer,
+    ProfileSerializer,
+    AlertSerializer,
+    ChangePasswordSerializer,
+    RegisterSerializer,
+)
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles
 from .utils import send_test_email,send_password_changed_email
 from rest_framework.views import APIView
@@ -92,3 +98,27 @@ class ProfileView(APIView):
     def get(self, request):
         serializer = ProfileSerializer(request.user)
         return Response(serializer.data)
+
+class RegisterView(APIView):
+
+    def post(self, request):
+
+        serializer = RegisterSerializer(data=request.data)
+
+        if serializer.is_valid():
+
+            user = serializer.save()
+
+            return Response(
+                {
+                    "message": "Fleet Manager registered successfully.",
+                    "username": user.username,
+                    "email": user.email,
+                },
+                status=status.HTTP_201_CREATED,
+            )
+
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )

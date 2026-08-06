@@ -1,5 +1,13 @@
 from django.urls import path , include
-from .views import SensorReadingView,AlertViewSet,TestEmailView,ChangePasswordView,VehicleViewSet,ProfileView
+from .views import (
+    SensorReadingView,
+    AlertViewSet,
+    TestEmailView,
+    ChangePasswordView,
+    VehicleViewSet,
+    ProfileView,
+    RegisterView,
+)
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (TokenObtainPairView , TokenRefreshView)
 from django.contrib.auth.views import (PasswordResetView,PasswordResetDoneView,PasswordResetConfirmView,PasswordResetCompleteView)
@@ -21,8 +29,9 @@ urlpatterns = [
     path("reset/done/",PasswordResetCompleteView.as_view(),name="password_reset_complete",),
     path("change-password/",ChangePasswordView.as_view(),name="change-password",),
     path("profile/", ProfileView.as_view(), name="profile"),
-       path("token/",TokenObtainPairView.as_view(), name='token_obtain_pair'),
-            path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("register/", RegisterView.as_view(), name="register"),
+    path("token/",TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 
 
 
