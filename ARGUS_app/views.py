@@ -10,7 +10,7 @@ from .serializers import (
     RegisterSerializer,
     CompanySerializer,
 )
-from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles
+from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies
 from .utils import send_test_email,send_password_changed_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -133,7 +133,7 @@ class CompanyViewSet(
 ):
 
     serializer_class = CompanySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [CanManageCompanies]
 
     def get_queryset(self):
         if self.request.user.role == User.Role.ADMIN:
@@ -147,3 +147,4 @@ class CompanyViewSet(
         user = self.request.user
         user.company = company
         user.save()
+
