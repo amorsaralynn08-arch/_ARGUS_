@@ -80,7 +80,9 @@ class SensorReading(models.Model):
     temperature = models.FloatField()
     vibration = models.FloatField()
     potentiometer_value=models.IntegerField()
-    
+    health_score = models.FloatField()
+    health_status = models.CharField(max_length=20, choices=Vehicle.Status.choices)
+
     created_at = models.DateTimeField(auto_now_add=True,db_index=True)
 
     class Meta:
@@ -99,6 +101,7 @@ class Alert(models.Model):
     class Severity(models.TextChoices):
         WARNING = "WARNING" , "Warning"
         CRITICAL= "CRITICAL" , "Critical"
+        NORMAL="NORMAL","Normal"
 
     
     sensor_reading = models.ForeignKey(
