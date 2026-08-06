@@ -9,6 +9,7 @@ from .serializers import (
     ChangePasswordSerializer,
     RegisterSerializer,
     CompanySerializer,
+    StaffUserSerializer,
 )
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies
 from .utils import send_test_email,send_password_changed_email
@@ -148,3 +149,28 @@ class CompanyViewSet(
         user.company = company
         user.save()
 
+class UserViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+
+    serializer_class = StaffUserSerializer
+    permission_classes = [CanManageUsers]
+
+    def get_queryset(self):
+
+        if self.request.user.role == User.Role.ADMIN:
+            return User.objects.all()
+
+        return User.objects.filter(
+            company=self.request.user.company
+        )
+
+    def perform_create(self, serializer):
+
+        serializer.save(
+            company=self.request.user.company
+        )

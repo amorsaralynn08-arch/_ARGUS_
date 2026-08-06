@@ -48,3 +48,18 @@ class CanManageCompanies(BasePermission):
                 User.Role.FLEET_MANAGER,
             ]
         )
+
+class CanManageUsers(BasePermission):
+    """
+    Allows Platform Admins and Fleet Managers
+    to create and manage users.
+    """
+
+    def has_permission(self, request, view):
+        return (
+            request.user.is_authenticated
+            and request.user.role in [
+                User.Role.ADMIN,
+                User.Role.FLEET_MANAGER,
+            ]
+        )
