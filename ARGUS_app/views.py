@@ -1,6 +1,6 @@
 
 from rest_framework import viewsets,mixins
-from .models import SensorReading , Alert , Vehicle
+from .models import SensorReading , Alert , Vehicle ,Company,User
 from .serializers import (
     SensorReadingSerializer,
     VehicleSerializer,
@@ -8,6 +8,7 @@ from .serializers import (
     AlertSerializer,
     ChangePasswordSerializer,
     RegisterSerializer,
+    CompanySerializer,
 )
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles
 from .utils import send_test_email,send_password_changed_email
@@ -122,3 +123,27 @@ class RegisterView(APIView):
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+class CompanyViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+):
+
+    serializer_class = CompanySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        if self.request.user.role == User.Role.ADMIN:
+            return Company.objects.all()
+
+        return Company.objects.filter(id=self.request.user.company_id)
+
+    def perform_create(self, serializer):
+        company = serializer.save()
+
+        user = self.request.user
+        user.company = company
+        user.save()
