@@ -8,6 +8,7 @@ from .views import (
     ProfileView,
     RegisterView,
     CompanyViewSet,
+    UserViewSet,
 )
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import (TokenObtainPairView , TokenRefreshView)
@@ -19,7 +20,7 @@ router.register(r"alerts" , AlertViewSet , basename="alert",)
 router.register(r"sensor-readings",SensorReadingView,basename="sensor-reading")
 router.register(r"vehicles",VehicleViewSet,basename="vehicle",)
 router.register(r"companies", CompanyViewSet, basename="company")
-
+router.register(r"users",UserViewSet,basename="user")
 
 urlpatterns = [
     

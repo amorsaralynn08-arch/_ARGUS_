@@ -11,7 +11,7 @@ from .serializers import (
     CompanySerializer,
     StaffUserSerializer,
 )
-from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies
+from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers
 from .utils import send_test_email,send_password_changed_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
