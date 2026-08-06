@@ -33,7 +33,7 @@ class AlertViewSet(
 ):
     
     def get_queryset(self):
-     return SensorReading.objects.filter(vehicle__company=self.request.user.company)
+     return Alert.objects.filter(sensor_reading__vehicle__company=self.request.user.company)
     serializer_class = AlertSerializer
     permission_classes = [CanManageAlerts]
 
