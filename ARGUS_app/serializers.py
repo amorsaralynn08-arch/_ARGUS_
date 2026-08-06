@@ -14,17 +14,17 @@ class SensorReadingSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["created_at"]
 
-        def validate_temperature(self,value):
+    def validate_temperature(self,value):
          if value < -40 or value >150:
           raise serializers.ValidationError("Temperature must be within the 40°C and 150°C threshhold")
          return value
 
-        def validate_vibration(self,value):
+    def validate_vibration(self,value):
          if value < 0:
           raise serializers.ValidationError("Vibrations cannot be negative")
          return value
 
-        def validate_potentiometer_value(self,value):
+    def validate_potentiometer_value(self,value):
          if value < 0 or value > 4095:
           raise serializers.ValidationError("Potentiometer value must be withing the 0 - 4095 threshhold")
          return value
