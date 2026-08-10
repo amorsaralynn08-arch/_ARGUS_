@@ -10,16 +10,21 @@ from .serializers import (
     RegisterSerializer,
     CompanySerializer,
     StaffUserSerializer,
+    ForgotPasswordSerializer,
+    ResetPasswordConfirmSerializer,
 )
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers
-from .utils import send_test_email,send_password_changed_email
+from .utils import send_test_email,send_password_changed_email,send_password_reset_email,send_password_reset_success_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.conf import settings
 
 # Create your views here.
 class SensorReadingView(
@@ -180,4 +185,46 @@ class UserViewSet(
 
         serializer.save(
             company=self.request.user.company
+        )
+
+class ForgotPasswordView(APIView):
+    permission_classes = []
+
+    def post(self, request):
+
+        serializer = ForgotPasswordSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        email = serializer.validated_data["email"]
+
+        try:
+            user = User.objects.get(email=email)
+
+            uidb64 = urlsafe_base64_encode(
+                force_bytes(user.pk)
+            )
+
+            token = default_token_generator.make_token(user)
+
+            reset_link = (
+                f"{settings.FRONTEND_URL}"
+                f"/reset-password/{uidb64}/{token}/"
+            )
+
+            send_password_reset_email(
+                user,
+                reset_link
+            )
+
+        except User.DoesNotExist:
+            pass
+
+        return Response(
+            {
+                "message": (
+                    "If an account with that email exists, "
+                    "a reset link has been sent."
+                )
+            },
+            status=status.HTTP_200_OK,
         )
