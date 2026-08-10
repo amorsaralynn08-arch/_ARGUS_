@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import *
-from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.password_validation import validate_password 
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
 
 class SensorReadingSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,6 +61,42 @@ class ChangePasswordSerializer(serializers.Serializer):
            )
 
         return attrs
+
+class ForgotPasswordSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class ResetPasswordConfirmSerializer(serializers.Serializer):
+    uidb64 = serializers.CharField()
+    token = serializers.CharField()
+    new_password = serializers.CharField(
+        write_only=True,
+        validators=[validate_password]
+    )
+
+    def validate(self, data):
+        try:
+            uid = force_str(
+                urlsafe_base64_decode(data["uidb64"])
+            )
+            user = User.objects.get(pk=uid)
+
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            raise serializers.ValidationError(
+                {"uidb64": "Invalid reset link."}
+            )
+
+        if not default_token_generator.check_token(
+            user,
+            data["token"]
+        ):
+            raise serializers.ValidationError(
+                {"token": "Invalid or expired reset link."}
+            )
+
+        data["user"] = user
+
+        return data
 
 class VehicleSerializer(serializers.ModelSerializer):
 
