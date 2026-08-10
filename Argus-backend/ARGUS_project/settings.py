@@ -103,6 +103,12 @@ EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
 
 
+FRONTEND_URL = config(
+    "FRONTEND_URL",
+    default="http://localhost:5173"
+)
+
+
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
 
