@@ -24,3 +24,25 @@ def send_password_reset_success_email(user):
     email = EmailMultiAlternatives(subject,"",settings.EMAIL_HOST_USER,[user.email],)
     email.attach_alternative(html_content,"text/html")
     email.send()
+
+def send_password_reset_email(user, reset_link):
+
+    subject = "Reset Your ARGUS Password"
+
+    html_content = render_to_string(
+        "emails/password_reset_request.html",
+        {
+            "user": user,
+            "reset_link": reset_link,
+        }
+    )
+
+    email = EmailMultiAlternatives(
+        subject,
+        "",
+        settings.EMAIL_HOST_USER,
+        [user.email],
+    )
+
+    email.attach_alternative(html_content, "text/html")
+    email.send()
