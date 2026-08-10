@@ -1,0 +1,33 @@
+:root {
+    /* ARGUS Brand */
+    --color-primary: #7B61FF;
+    --color-primary-hover: #6A4FE8;
+
+    /* Light mode */
+    --color-background: #F5F5F8;
+    --color-surface: #FFFFFF;
+    --color-surface-secondary: #F0F0F5;
+
+    --color-text-primary: #18181B;
+    --color-text-secondary: #71717A;
+    --color-border: #E4E4E7;
+
+    /* System status */
+    --color-success: #22C55E;
+    --color-warning: #F59E0B;
+    --color-danger: #EF4444;
+    --color-info: #3B82F6;
+}
+
+[data-theme="dark"] {
+    /* Dark mode */
+    --color-background: #111116;
+    --color-surface: #19191F;
+    --color-surface-secondary: #23232B;
+
+    --color-text-primary: #F4F4F5;
+    --color-text-secondary: #A1A1AA;
+    --color-border: #2F2F38;
+
+    --color-primary: #8B75FF;
+}
