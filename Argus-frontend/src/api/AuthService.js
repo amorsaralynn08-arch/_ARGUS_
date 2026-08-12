@@ -1,4 +1,3 @@
-// src/api/authService.js
 import api from "./axios";
 
 export const register = (userData) => {
