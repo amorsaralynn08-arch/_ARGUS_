@@ -35,10 +35,10 @@ export const AuthProvider = ({ children }) => {
     await fetchProfile();
   };
 
-  const register = async (userData) => {
-    return authService.register(userData);
-  };
-
+const register = async (userData) => {
+  await authService.register(userData);
+  await login(userData.username, userData.password);
+};
   const logout = () => {
     authService.logout();
     setUser(null);
