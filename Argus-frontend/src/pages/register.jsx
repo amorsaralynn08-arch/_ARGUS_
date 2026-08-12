@@ -70,19 +70,26 @@ const Register = () => {
     <AuthLayout subtitle="Create your Fleet Manager account">
       {errors.general && <p className="form-error">{errors.general}</p>}
 
-      <form onSubmit={handleSubmit} noValidate>
-        <FormInput label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} />
-        <FormInput label="Email" name="email" type="email" value={formData.email} onChange={handleChange} error={errors.email} />
-        <FormInput label="First name" name="first_name" value={formData.first_name} onChange={handleChange} />
-        <FormInput label="Last name" name="last_name" value={formData.last_name} onChange={handleChange} />
-        <FormInput label="Phone number" name="phone_number" value={formData.phone_number} onChange={handleChange} />
-        <FormInput label="Password" name="password" type="password" value={formData.password} onChange={handleChange} error={errors.password} />
-        <FormInput label="Confirm password" name="confirm_password" type="password" value={formData.confirm_password} onChange={handleChange} error={errors.confirm_password} />
+<form onSubmit={handleSubmit} noValidate>
+  <FormInput label="Username" name="username" value={formData.username} onChange={handleChange} error={errors.username} />
+  <FormInput label="Email" name="email" type="email" value={formData.email} onChange={handleChange} error={errors.email} />
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Creating account..." : "Register"}
-        </button>
-      </form>
+  <div className="form-row">
+    <FormInput label="First name" name="first_name" value={formData.first_name} onChange={handleChange} />
+    <FormInput label="Last name" name="last_name" value={formData.last_name} onChange={handleChange} />
+  </div>
+
+  <FormInput label="Phone number" name="phone_number" value={formData.phone_number} onChange={handleChange} />
+
+  <div className="form-row">
+    <FormInput label="Password" name="password" type="password" value={formData.password} onChange={handleChange} error={errors.password} />
+    <FormInput label="Confirm password" name="confirm_password" type="password" value={formData.confirm_password} onChange={handleChange} error={errors.confirm_password} />
+  </div>
+
+  <button type="submit" disabled={loading}>
+    {loading ? "Creating account..." : "Register"}
+  </button>
+</form>
 
       <p className="auth-footer">
         Already have an account? <Link to="/login">Sign in</Link>
