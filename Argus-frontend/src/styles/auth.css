@@ -62,8 +62,11 @@
   text-align: center;
 }
 
-.form-row { display: flex; gap: 1.25rem; }
-.form-group, .form-row .form-group { margin-bottom: 1.1rem; flex: 1; }
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.25rem; }
+.form-group { margin-bottom: 1.1rem; }
+.form-full { grid-column: 1 / -1; }
+
 
 .form-group label {
   display: block;
@@ -167,5 +170,5 @@
 }
 
 @media (max-width: 480px) {
-  .form-row { flex-direction: column; gap: 0; }
+  .form-grid { grid-template-columns: 1fr; }
 }
