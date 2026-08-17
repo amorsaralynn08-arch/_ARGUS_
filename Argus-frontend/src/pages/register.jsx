@@ -64,7 +64,7 @@ const Register = () => {
     setLoading(true);
     try {
       await register(formData);
-      navigate("/dashboard");
+      navigate("/fleet-setup");
     } catch (err) {
       if (err.response?.data) {
         setErrors((prev) => ({ ...prev, ...err.response.data }));

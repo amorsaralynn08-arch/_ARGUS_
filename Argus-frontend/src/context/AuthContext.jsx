@@ -46,7 +46,7 @@ const register = async (userData) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, loading, isAuthenticated: !!user, login, register, logout }}
+      value={{ user, loading, isAuthenticated: !!user, login, register, logout, refreshUser: fetchProfile }}
     >
       {children}
     </AuthContext.Provider>
