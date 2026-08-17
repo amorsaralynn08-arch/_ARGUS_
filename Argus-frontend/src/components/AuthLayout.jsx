@@ -1,8 +1,18 @@
-const AuthLayout = ({ subtitle, children }) => (
+import { Eye } from "lucide-react";
+import ScatteredEyes from "./ScatteredEyes";
+
+const AuthLayout = ({ formTitle, children }) => (
   <div className="auth-page">
-    <div className="auth-card">
-      <h1 className="auth-title">ARGUS</h1>
-      {subtitle && <p className="auth-subtitle">{subtitle}</p>}
+    <ScatteredEyes />
+    <div className="auth-content">
+      <div className="auth-header">
+        <Eye size={26} className="auth-logo" aria-hidden="true" />
+        <div className="brand-name">ARGUS</div>
+        <div className="brand-tagline">See it before it breaks.</div>
+      </div>
+
+      <div className="auth-form-title">{formTitle}</div>
+
       {children}
     </div>
   </div>
