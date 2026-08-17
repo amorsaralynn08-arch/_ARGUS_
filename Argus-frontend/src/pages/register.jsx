@@ -67,7 +67,7 @@ const Register = () => {
   };
 
   return (
-    <AuthLayout subtitle="Create your Fleet Manager account">
+    <AuthLayout formTitle="Register">
       {errors.general && <p className="form-error">{errors.general}</p>}
 
 <form onSubmit={handleSubmit} noValidate>
