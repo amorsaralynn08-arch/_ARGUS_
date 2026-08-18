@@ -2,13 +2,27 @@ import { NavLink } from "react-router-dom";
 import { Eye, LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
+
 const navItems = [
-  { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true },
-  { to: "/dashboard/vehicles", icon: Car, label: "Vehicles" },
-  { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance" },
-  { to: "/dashboard/alerts", icon: Bell, label: "Alerts" },
+  { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
+  { to: "/dashboard/vehicles", icon: Car, label: "Vehicles", ready: false },
+  { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance", ready: false },
+  { to: "/dashboard/alerts", icon: Bell, label: "Alerts", ready: false },
 ];
 
+{navItems.map(({ to, icon: Icon, label, end, ready }) =>
+  ready ? (
+    <NavLink key={to} to={to} end={end} className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+      <Icon size={17} aria-hidden="true" />
+      <span>{label}</span>
+    </NavLink>
+  ) : (
+    <span key={to} className="sidebar-link disabled">
+      <Icon size={17} aria-hidden="true" />
+      <span>{label}</span>
+    </span>
+  )
+)}
 const Sidebar = () => {
   const { user, logout } = useAuth();
 

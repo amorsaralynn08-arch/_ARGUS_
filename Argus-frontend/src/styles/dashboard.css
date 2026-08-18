@@ -67,10 +67,18 @@
   color: var(--color-text-primary);
 }
 
+
 .sidebar-link.active {
-  background: var(--color-surface-secondary);
-  color: var(--color-text-primary);
+  background: rgba(123, 97, 255, 0.08);
+  color: var(--color-primary);
   font-weight: 500;
+  border-left: 2px solid var(--color-primary);
+  padding-left: 8px;
+}
+
+
+.sidebar-brand svg {
+  color: var(--color-primary);
 }
 
 .logout-btn:hover {
@@ -81,4 +89,10 @@
   flex: 1;
   padding: 2rem 2.5rem;
   overflow-y: auto;
+  position: relative;
+}
+
+.sidebar-link.disabled {
+  opacity: 0.4;
+  cursor: default;
 }
