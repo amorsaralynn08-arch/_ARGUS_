@@ -1,46 +1,20 @@
 import { useState, useEffect } from "react";
-import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { Search, Plus } from "lucide-react";
 import Modal from "../components/Modal";
 import AddVehicleForm from "../components/AddVehicleForm";
 import { useNavigate } from "react-router-dom";
+import AddVehicleForm from "../components/AddVehicleForm";
 
-const statusStyles = {
-  ACTIVE: { label: "Normal", color: "var(--color-success)" },
-  MAINTENANCE: { label: "Maintenance", color: "var(--color-warning)" },
-  CRITICAL: { label: "Critical", color: "var(--color-danger)" },
-  OFFLINE: { label: "Offline", color: "var(--color-text-secondary)" },
-};
+
 
 const Dashboard = () => {
   const { user } = useAuth();
   const [vehicles, setVehicles] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
-  const navigate = useNavigate();
 
-  const fetchVehicles = async (query = "") => {
-    setLoading(true);
-    try {
-      const { data } = await api.get(`vehicles/${query ? `?search=${query}` : ""}`);
-      setVehicles(Array.isArray(data) ? data : data.results || []);
-    } catch (err) {
-      console.error("Failed to load vehicles:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  useEffect(() => {
-    fetchVehicles();
-  }, []);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => fetchVehicles(search), 400);
-    return () => clearTimeout(timeout);
-  }, [search]);
 
   const counts = vehicles.reduce(
     (acc, v) => {
@@ -76,33 +50,11 @@ const Dashboard = () => {
         </button>
       </div>
 
-      <div className="vehicle-table">
-        <div className="table-row table-head">
-          <div>Vehicle</div><div>Reg. number</div><div>Status</div><div>Year</div>
-        </div>
-
-        {loading ? (
-          <div className="table-empty">Loading...</div>
-        ) : vehicles.length === 0 ? (
-          <div className="table-empty">No vehicles yet — add your first one to get started.</div>
-        ) : (
-          vehicles.map((v) => {
-            const s = statusStyles[v.status] || statusStyles.ACTIVE;
-            return (
-                <div className="table-row" key={v.id} onClick={() => navigate(`/dashboard/vehicles/${v.id}`)} style={{ cursor: "pointer" }}>
-                <div>{v.manufacturer} {v.model}</div>
-                <div>{v.registration_number}</div>
-                <div style={{ color: s.color }}>{s.label}</div>
-                <div>{v.year}</div>
-              </div>
-            );
-          })
-        )}
-      </div>
+          <VehicleTable vehicles={vehicles} loading={loading} />
 
       {showAddModal && (
         <Modal title="Add Vehicle" onClose={() => setShowAddModal(false)}>
-          <AddVehicleForm onSuccess={(newVehicle) => { setVehicles((v) => [newVehicle, ...v]); setShowAddModal(false); }} />
+          <AddVehicleForm onSuccess={(v) => { addVehicle(v); setShowAddModal(false); }} />
         </Modal>
       )}
     </div>

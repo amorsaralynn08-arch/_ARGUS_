@@ -48,7 +48,9 @@ function App() {
           <Route index element={<Dashboard />} />
 
           {/* /dashboard/vehicles/:id */}
+          <Route path="vehicles" element={<Vehicles />} />
           <Route path="vehicles/:id" element={<VehicleDetail />} />
+
 
           {/* Future routes */}
           {/* <Route path="vehicles" element={<Vehicles />} /> */}

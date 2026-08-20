@@ -5,9 +5,10 @@ import { useAuth } from "../context/AuthContext";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
-  { to: "/dashboard/vehicles", icon: Car, label: "Vehicles", ready: false },
+  { to: "/dashboard/vehicles", icon: Car, label: "Vehicles", ready: true },
   { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance", ready: false },
   { to: "/dashboard/alerts", icon: Bell, label: "Alerts", ready: false },
+
 ];
 
 {navItems.map(({ to, icon: Icon, label, end, ready }) =>
