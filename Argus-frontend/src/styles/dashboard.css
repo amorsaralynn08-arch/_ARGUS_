@@ -213,3 +213,16 @@
 }
 
 .modal-close { background: none; border: none; cursor: pointer; color: var(--color-text-secondary); }
+
+.back-link { display: flex; align-items: center; gap: 6px; background: none; border: none; color: var(--color-text-secondary); font-size: 13px; cursor: pointer; margin-bottom: 1.5rem; padding: 0; }
+.back-link:hover { color: var(--color-text-primary); }
+
+.detail-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; }
+.status-badge { border: 1px solid; border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 500; }
+
+.detail-info-grid, .reading-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 2rem; }
+.detail-info-grid > div, .reading-grid > div { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 8px; padding: 0.85rem 1rem; }
+.detail-info-grid span, .reading-grid span { font-size: 11px; color: var(--color-text-secondary); display: block; margin-bottom: 4px; }
+.detail-info-grid div div, .reading-grid div div { font-family: var(--font-mono); font-size: 14px; color: var(--color-text-primary); }
+
+.section-title { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 1.5rem 0 0.85rem; }

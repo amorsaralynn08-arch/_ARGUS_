@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { Search, Plus } from "lucide-react";
 import Modal from "../components/Modal";
 import AddVehicleForm from "../components/AddVehicleForm";
+import { useNavigate } from "react-router-dom";
 
 const statusStyles = {
   ACTIVE: { label: "Normal", color: "var(--color-success)" },
@@ -18,6 +19,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
+  const navigate = useNavigate();
 
   const fetchVehicles = async (query = "") => {
     setLoading(true);
@@ -87,7 +89,7 @@ const Dashboard = () => {
           vehicles.map((v) => {
             const s = statusStyles[v.status] || statusStyles.ACTIVE;
             return (
-              <div className="table-row" key={v.id}>
+                <div className="table-row" key={v.id} onClick={() => navigate(`/dashboard/vehicles/${v.id}`)} style={{ cursor: "pointer" }}>
                 <div>{v.manufacturer} {v.model}</div>
                 <div>{v.registration_number}</div>
                 <div style={{ color: s.color }}>{s.label}</div>

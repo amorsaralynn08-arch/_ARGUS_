@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import FleetSetup from "./pages/FleetSetup";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
+import VehicleDetails from "./pages/VehicleDetails";
 // import Vehicles from "./pages/Vehicles";
 // import Maintenance from "./pages/Maintenance";
 // import Alerts from "./pages/Alerts";
@@ -50,6 +51,8 @@ function App() {
           {/* <Route path="settings" element={<Settings />} /> */}
         </Route>
 
+          <Route index element={<Dashboard />} />
+          <Route path="vehicles/:id" element={<VehicleDetails />} />
        
 
         {/* Unknown Routes */}
