@@ -166,6 +166,13 @@ class ProfileSerializer(serializers.ModelSerializer):
             "company",
         ]
 
+class ProfileUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "phone_number"]
+
+        
+
 class RegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(
         write_only=True,

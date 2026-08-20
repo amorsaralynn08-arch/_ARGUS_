@@ -2,6 +2,7 @@
 from rest_framework import viewsets,mixins
 from .models import SensorReading , Alert , Vehicle ,Company,User
 from .serializers import (
+    ProfileUpdateSerializer,
     SensorReadingSerializer,
     VehicleSerializer,
     ProfileSerializer,
@@ -116,6 +117,13 @@ class ProfileView(APIView):
     def get(self, request):
         serializer = ProfileSerializer(request.user)
         return Response(serializer.data)
+
+    def patch(self, request):
+        serializer = ProfileUpdateSerializer(request.user, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(ProfileSerializer(request.user).data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class RegisterView(APIView):
 
