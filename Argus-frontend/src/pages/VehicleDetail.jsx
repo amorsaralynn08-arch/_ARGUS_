@@ -18,26 +18,39 @@ const VehicleDetail = () => {
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+
+   useEffect(() => {
     const load = async () => {
-      setLoading(true);
-      try {
-        const [vehicleRes, readingsRes, alertsRes] = await Promise.all([
-          api.get(`vehicles/${id}/`),
-          api.get(`sensor-readings/?vehicle=${id}`),
-          api.get(`alerts/?sensor_reading__vehicle=${id}`),
-        ]);
-        setVehicle(vehicleRes.data);
-        setReadings(Array.isArray(readingsRes.data) ? readingsRes.data : readingsRes.data.results || []);
-        setAlerts(Array.isArray(alertsRes.data) ? alertsRes.data : alertsRes.data.results || []);
-      } catch (err) {
-        console.error("Failed to load vehicle:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, [id]);
+    setLoading(true);
+
+    try {
+      const { data } = await api.get(`vehicles/${id}/`);
+      setVehicle(data);
+    } catch (err) {
+      console.error("Failed to load vehicle:", err.response?.status, err.response?.data);
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const { data } = await api.get(`sensor-readings/?vehicle=${id}`);
+      setReadings(Array.isArray(data) ? data : data.results || []);
+    } catch (err) {
+      console.error("Failed to load readings:", err.response?.status, err.response?.data);
+    }
+
+    try {
+      const { data } = await api.get(`alerts/?sensor_reading__vehicle=${id}`);
+      setAlerts(Array.isArray(data) ? data : data.results || []);
+    } catch (err) {
+      console.error("Failed to load alerts:", err.response?.status, err.response?.data);
+    }
+
+    setLoading(false);
+  };
+
+  load();
+}, [id]);
 
   if (loading) return <div>Loading...</div>;
   if (!vehicle) return <div>Vehicle not found.</div>;

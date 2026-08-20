@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import FleetSetup from "./pages/FleetSetup";
 import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
-import VehicleDetails from "./pages/VehicleDetails";
+import VehicleDetail from "./pages/VehicleDetail";
 // import Vehicles from "./pages/Vehicles";
 // import Maintenance from "./pages/Maintenance";
 // import Alerts from "./pages/Alerts";
@@ -43,17 +43,21 @@ function App() {
             </ProtectedRoute>
           }
         >
+
+ {/* /dashboard */}
           <Route index element={<Dashboard />} />
+
+          {/* /dashboard/vehicles/:id */}
+          <Route path="vehicles/:id" element={<VehicleDetail />} />
+
+          {/* Future routes */}
           {/* <Route path="vehicles" element={<Vehicles />} /> */}
           {/* <Route path="maintenance" element={<Maintenance />} /> */}
           {/* <Route path="alerts" element={<Alerts />} /> */}
           {/* <Route path="profile" element={<Profile />} /> */}
           {/* <Route path="settings" element={<Settings />} /> */}
         </Route>
-
-          <Route index element={<Dashboard />} />
-          <Route path="vehicles/:id" element={<VehicleDetails />} />
-       
+         
 
         {/* Unknown Routes */}
          <Route path="*" element={<Navigate to="/" replace />} />
