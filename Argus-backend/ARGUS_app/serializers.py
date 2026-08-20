@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
-
+import re
 class SensorReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorReading
@@ -104,6 +104,21 @@ class VehicleSerializer(serializers.ModelSerializer):
         model = Vehicle
         fields = "__all__"
         read_only_fields = ["company"]
+
+    def validate_vin(self, value):
+         value = value.upper().strip()
+
+         if len(value) != 17:
+            raise serializers.ValidationError(
+                "VIN must be exactly 17 characters."
+            )
+
+         if not re.match(r'^[A-HJ-NPR-Z0-9]{17}$', value):
+            raise serializers.ValidationError(
+                "VIN contains invalid characters (real VINs never use I, O, or Q — they're too easily confused with 1 and 0)."
+            )
+
+         return value
 
     def validate_driver(self, value):
         """
