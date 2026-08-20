@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Search, Plus } from "lucide-react";
 import Modal from "../components/Modal";
 import AddVehicleForm from "../components/AddVehicleForm";
-import { useNavigate } from "react-router-dom";
-import AddVehicleForm from "../components/AddVehicleForm";
-
-
+import VehicleTable from "../components/VehicleTable";
+import useVehicles from "../hooks/useVehicles";
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [vehicles, setVehicles] = useState([]);
+  const { vehicles, loading, search, setSearch, addVehicle } = useVehicles();
   const [showAddModal, setShowAddModal] = useState(false);
-
-
-
 
   const counts = vehicles.reduce(
     (acc, v) => {
@@ -50,7 +45,7 @@ const Dashboard = () => {
         </button>
       </div>
 
-          <VehicleTable vehicles={vehicles} loading={loading} />
+      <VehicleTable vehicles={vehicles} loading={loading} />
 
       {showAddModal && (
         <Modal title="Add Vehicle" onClose={() => setShowAddModal(false)}>

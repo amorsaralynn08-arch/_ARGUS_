@@ -48,6 +48,15 @@ class AlertSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["created_at"]
 
+    def get_vehicle(self, obj):
+        v = obj.sensor_reading.vehicle
+        return {
+            "id": v.id,
+            "registration_number": v.registration_number,
+            "manufacturer": v.manufacturer,
+            "model": v.model,
+        }    
+
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
