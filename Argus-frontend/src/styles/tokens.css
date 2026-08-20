@@ -1,18 +1,29 @@
 :root {
-    /* ARGUS Brand */
-    --color-primary: #7B61FF;
-    --color-primary-hover: #6A4FE8;
+    /* ============================================
+       ARGUS COLOR SYSTEM — brass & charcoal.
+       Status colors reserved ONLY for real status
+       meaning — never used decoratively.
+       ============================================ */
 
-    /* Light mode */
-    --color-background: #F5F5F8;
-    --color-surface: #FFFFFF;
-    --color-surface-secondary: #F0F0F5;
+    /* Light mode (default) — warm parchment */
+    --color-background: #F1EEE3;
+    --color-surface: #EAE3CF;
+    --color-surface-secondary: #E2D9BF;
+    --color-border: #DCD3BB;
 
-    --color-text-primary: #14181C;
-    --color-text-secondary: #6B6F76;
-    --color-border: #E4E4E9;
+    --color-text-primary: #1C1A15;
+    --color-text-secondary: #71695A;
 
-    /* System status */
+    /* Brand — brass. Logo, buttons, links, focus,
+       eye texture. Used sparingly, never as a
+       large fill except the CTA button itself. */
+    --color-primary: #A9793A;
+    --color-primary-hover: #8C6329;
+    --color-primary-soft: #8C6329;   /* the italic headline word */
+    --color-primary-dim: #B08A4E;    /* dividers, small icons */
+    --color-button-text: #17140D;    /* fixed ink, stays readable on brass in either mode */
+
+    /* Status — ONLY for real status meaning */
     --color-success: #3FB68B;
     --color-warning: #F5A623;
     --color-danger: #E5484D;
@@ -22,18 +33,22 @@
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
+    --font-serif: 'Fraunces', serif;
 }
 
 [data-theme="dark"] {
-    /* Dark mode */
-    --color-background: #0F1417;
-    --color-surface: #1B2127;
-    --color-surface-secondary: #23232B;
+    /* Dark mode — near-black charcoal */
+    --color-background: #0D1115;
+    --color-surface: #12161C;
+    --color-surface-secondary: #171C22;
+    --color-border: #262B32;
 
-    --color-text-primary: #E8EDF1;
-    --color-text-secondary: #A1A1AA;
-    --color-border: #2A3138;
+    --color-text-primary: #F3EFE3;
+    --color-text-secondary: #8E97A3;
 
-    --color-primary: #8B75FF;
-    --color-primary-hover: #7B61FF;
+    --color-primary: #C79A4B;
+    --color-primary-hover: #E3C583;
+    --color-primary-soft: #E3C583;
+    --color-primary-dim: #7C6234;
+    --color-button-text: #0D1115;
 }

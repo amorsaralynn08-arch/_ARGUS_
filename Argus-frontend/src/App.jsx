@@ -1,8 +1,9 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Register from "./pages/Register";
+
 import Login from "./pages/Login";
 import FleetSetup from "./pages/FleetSetup";
 import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
 // import Vehicles from "./pages/Vehicles";
 // import Maintenance from "./pages/Maintenance";
 // import Alerts from "./pages/Alerts";
@@ -17,8 +18,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Public Routes */}
-        <Route path="/register" element={<Register />} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Navigate to="/" replace />} />
+        
 
         {/* Fleet Setup */}
         <Route
@@ -47,11 +50,10 @@ function App() {
           {/* <Route path="settings" element={<Settings />} /> */}
         </Route>
 
-        {/* Default Route */}
-        <Route path="/" element={<Navigate to="/dashboard" replace />} />
+       
 
         {/* Unknown Routes */}
-        <Route path="*" element={<Navigate to="/login" replace />} />
+         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
