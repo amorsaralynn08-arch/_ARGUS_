@@ -96,3 +96,120 @@
   opacity: 0.4;
   cursor: default;
 }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 1.75rem;
+}
+
+.stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+}
+
+.stat-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.stat-value { font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--color-text-primary); }
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 12px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  max-width: 320px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: var(--color-text-secondary);
+}
+.search-box input { border: none; background: none; outline: none; font-size: 13px; width: 100%; color: var(--color-text-primary); }
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-primary);
+  color: var(--color-button-text);
+  border: none;
+  border-radius: 6px;
+  padding: 9px 16px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+}
+.add-btn:hover { background: var(--color-primary-hover); }
+
+.vehicle-table {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1.5fr 1fr 1fr;
+  padding: 12px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--color-border);
+}
+.table-row:last-child { border-bottom: none; }
+
+.table-head {
+  background: var(--color-surface-secondary);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+.table-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-box {
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 100%;
+  max-width: 400px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--color-text-primary);
+  margin-bottom: 1.25rem;
+}
+
+.modal-close { background: none; border: none; cursor: pointer; color: var(--color-text-secondary); }
