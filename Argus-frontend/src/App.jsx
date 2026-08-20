@@ -7,7 +7,7 @@ import Home from "./pages/Home";
 import VehicleDetail from "./pages/VehicleDetail";
 import Vehicles from "./pages/Vehicles";
 // import Maintenance from "./pages/Maintenance";
-// import Alerts from "./pages/Alerts";
+import Alerts from "./pages/Alerts";
 // import Profile from "./pages/Profile";
 // import Settings from "./pages/Settings";
 
@@ -50,6 +50,7 @@ function App() {
           {/* /dashboard/vehicles/:id */}
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="vehicles/:id" element={<VehicleDetail />} />
+          <Route path="alerts" element={<Alerts />} />
 
           {/* Future routes */}
           {/* <Route path="vehicles" element={<Vehicles />} /> */}
