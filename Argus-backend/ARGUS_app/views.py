@@ -39,7 +39,8 @@ class SensorReadingView(
      return SensorReading.objects.filter(vehicle__company=self.request.user.company)
     serializer_class = SensorReadingSerializer  
     permission_classes = [CanViewSensorReadings]
-
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["vehicle"]
 
 class AlertViewSet(
     mixins.ListModelMixin,
@@ -52,7 +53,10 @@ class AlertViewSet(
      return Alert.objects.filter(sensor_reading__vehicle__company=self.request.user.company)
     serializer_class = AlertSerializer
     permission_classes = [CanManageAlerts]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["sensor_reading__vehicle"]
 
+    
 class TestEmailView(APIView):
     def post(self,request):
         send_test_email(request.user.email)
