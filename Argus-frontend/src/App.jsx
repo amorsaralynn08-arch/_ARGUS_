@@ -51,12 +51,12 @@ function App() {
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="vehicles/:id" element={<VehicleDetail />} />
           <Route path="alerts" element={<Alerts />} />
+          <Route path="profile" element={<Profile />} />
 
           {/* Future routes */}
-          {/* <Route path="vehicles" element={<Vehicles />} /> */}
+
           {/* <Route path="maintenance" element={<Maintenance />} /> */}
-          {/* <Route path="alerts" element={<Alerts />} /> */}
-          {/* <Route path="profile" element={<Profile />} /> */}
+          
           {/* <Route path="settings" element={<Settings />} /> */}
         </Route>
          

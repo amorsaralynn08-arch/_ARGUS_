@@ -49,7 +49,7 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <NavLink to="/dashboard/profile" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+        <NavLink to="/dashboard/profile" className={({ isActive }) => `sidebar-link${isActive ? " active" : "true"}`}>
           <User size={17} aria-hidden="true" />
           <span>Profile</span>
         </NavLink>
