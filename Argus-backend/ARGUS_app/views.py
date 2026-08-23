@@ -55,7 +55,7 @@ class AlertViewSet(
     serializer_class = AlertSerializer
     permission_classes = [CanManageAlerts]
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ["sensor_reading__vehicle"]
+    filterset_fields = ["sensor_reading__vehicle","is_resolved"]
 
     
 class TestEmailView(APIView):
