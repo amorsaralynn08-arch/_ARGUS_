@@ -3,6 +3,8 @@ import { Eye, LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "luci
 import { useAuth } from "../context/AuthContext";
 import {useState} from "react";
 import Modal from "./Modal";
+import { Eye, EyeOff, LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
+import { useTheme } from "../context/ThemeContext";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
@@ -10,6 +12,8 @@ const navItems = [
   { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance", ready: false },
   { to: "/dashboard/alerts", icon: Bell, label: "Alerts", ready: true },
 ];
+
+const{theme , toggleTheme} = useTheme(); 
 
 const Sidebar = () => {
   const {user , logout } = useAuth();
@@ -23,10 +27,12 @@ const Sidebar = () => {
 
   return (
     <aside className="sidebar">
-      <div className="sidebar-brand">
-        <Eye size={20} aria-hidden="true" />
-        <span>ARGUS</span>
-      </div>
+<div className="sidebar-brand">
+  <button className="brand-eye" onClick={toggleTheme} title="Toggle theme">
+    {theme === "light" ? <Eye size={20} aria-hidden="true" /> : <EyeOff size={20} aria-hidden="true" />}
+  </button>
+  <span>ARGUS</span>
+</div>
 
       <nav className="sidebar-nav">
         {navItems.map(({ to, icon: Icon, label, end, ready }) =>
