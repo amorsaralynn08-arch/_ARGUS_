@@ -232,3 +232,39 @@ a {
 
 .section-title { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--color-text-primary); margin: 1.5rem 0 0.85rem; }
 
+.toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  color: var(--color-text-primary);
+  padding: 10px 18px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  z-index: 200;
+}
+.toast svg { color: var(--color-success); }
+
+.confirm-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid var(--color-border);
+  background: none;
+  color: var(--color-text-primary);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.confirm-btn.danger {
+  background: var(--color-danger);
+  border-color: var(--color-danger);
+  color: #fff;
+}

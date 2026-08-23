@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState , useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AuthLayout from "../components/AuthLayout";
 import FormInput from "../components/FormInput";
+import Toast from "../components/Toast";
 import "../styles/auth.css";
 
 const Login = () => {
@@ -12,6 +13,15 @@ const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [toastMessage, setToastMessage] = useState(null);
+
+  useEffect(() => {
+    const msg = sessionStorage.getItem("logoutMessage");
+    if (msg) {
+      setToastMessage(msg);
+      sessionStorage.removeItem("logoutMessage");
+    }
+  }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -46,7 +56,10 @@ const Login = () => {
   };
 
   return (
-    <AuthLayout formTitle="Sign in">
+     <>
+    {toastMessage && <Toast message={toastMessage} onDone={() => setToastMessage(null)} />}
+
+      <AuthLayout formTitle="Sign in">
       {errors.general && <p className="form-error">{errors.general}</p>}
 
       <form onSubmit={handleSubmit} noValidate>
@@ -65,7 +78,9 @@ const Login = () => {
       <p className="auth-footer">
         Don't have an account? <Link to="/register">Register</Link>
       </p>
+
     </AuthLayout>
+    </>
   );
 };
 
