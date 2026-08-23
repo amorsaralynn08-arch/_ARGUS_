@@ -1,10 +1,10 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Eye, LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
+import {LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import {useState} from "react";
-import Modal from "./Modal";
-import { Eye, EyeOff, LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
+import Modal from "./Modal";
+import BrandEyeToggle from "./BrandEyeToogle";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
@@ -13,26 +13,23 @@ const navItems = [
   { to: "/dashboard/alerts", icon: Bell, label: "Alerts", ready: true },
 ];
 
-const{theme , toggleTheme} = useTheme(); 
-
 const Sidebar = () => {
-  const {user , logout } = useAuth();
-  const [showConfirm , setShowConfirm] = useState(false);
+  const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
+  const [showConfirm, setShowConfirm] = useState(false);
 
-  const handleConfirmLogout = () =>{
-    sessionStorage.setItem("logoutMessage", `${user?.first_name || user?.username} has logged out successfully.`);
+  const handleConfirmLogout = () => {
+    sessionStorage.setItem("logoutMessage", `${user?.first_name || user?.username} has logged out.`);
     logout();
     setShowConfirm(false);
   };
 
   return (
     <aside className="sidebar">
-<div className="sidebar-brand">
-  <button className="brand-eye" onClick={toggleTheme} title="Toggle theme">
-    {theme === "light" ? <Eye size={20} aria-hidden="true" /> : <EyeOff size={20} aria-hidden="true" />}
-  </button>
-  <span>ARGUS</span>
-</div>
+      <div className="sidebar-brand">
+        <BrandEyeToggle theme={theme} onClick={toggleTheme} />
+        <span>ARGUS</span>
+      </div>
 
       <nav className="sidebar-nav">
         {navItems.map(({ to, icon: Icon, label, end, ready }) =>
@@ -64,6 +61,7 @@ const Sidebar = () => {
           <span>Log out</span>
         </button>
       </div>
+
       {showConfirm && (
         <Modal title="Log out?" onClose={() => setShowConfirm(false)}>
           <p style={{ fontSize: 13, color: "var(--color-text-secondary)", marginBottom: 20 }}>

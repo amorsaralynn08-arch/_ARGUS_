@@ -320,3 +320,8 @@ a {
   display: flex;
 }
 .brand-eye:hover { color: var(--color-primary-hover); }
+
+
+.dashboard-content {
+  color: var(--color-text-primary);
+}
