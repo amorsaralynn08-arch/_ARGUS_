@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { Eye, LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import {useState} from "react";
+import Modal from "./Modal";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
