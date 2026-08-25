@@ -4,7 +4,7 @@ import {LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-rea
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import Modal from "./Modal";
-import BrandEyeToggle from "./BrandEyeToogle";
+import BrandEyeToggle from "./BrandEyeToggle";
 
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
