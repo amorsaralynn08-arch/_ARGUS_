@@ -329,3 +329,22 @@ class StaffUserSerializer(serializers.ModelSerializer):
         )
 
         return user
+
+class MaintenanceRecordSerializer(serializers.ModelSerializer):
+    vehicle_display = serializers.SerializerMethodField()
+    logged_by_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MaintenanceRecord
+        fields = [
+            "id", "vehicle", "vehicle_display", "service_type",
+            "description", "performed_by", "cost", "date_performed",
+            "logged_by", "logged_by_name", "created_at",
+        ]
+        read_only_fields = ["logged_by", "created_at"]
+
+    def get_vehicle_display(self, obj):
+        return f"{obj.vehicle.manufacturer} {obj.vehicle.model} — {obj.vehicle.registration_number}"
+
+    def get_logged_by_name(self, obj):
+        return obj.logged_by.username if obj.logged_by else None
