@@ -9,8 +9,7 @@ import Vehicles from "./pages/Vehicles";
 // import Maintenance from "./pages/Maintenance";
 import Alerts from "./pages/Alerts";
 import Profile from "./pages/Profile";
-// import Settings from "./pages/Settings";
-
+import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layout/DashboardLayout";
 
@@ -52,7 +51,7 @@ function App() {
           <Route path="vehicles/:id" element={<VehicleDetail />} />
           <Route path="alerts" element={<Alerts />} />
           <Route path="profile" element={<Profile />} />
-
+          <Route path="settings" element={<Settings />} />
           {/* Future routes */}
 
           {/* <Route path="maintenance" element={<Maintenance />} /> */}
