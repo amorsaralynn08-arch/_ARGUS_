@@ -52,12 +52,9 @@ function App() {
           <Route path="alerts" element={<Alerts />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
-          {/* Future routes */}
-
-          {/* <Route path="maintenance" element={<Maintenance />} /> */}
+          {<Route path="maintenance" element={<Maintenance />} /> }
           
-          {/* <Route path="settings" element={<Settings />} /> */}
-        </Route>
+         
          
 
         {/* Unknown Routes */}

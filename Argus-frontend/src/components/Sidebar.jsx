@@ -9,7 +9,7 @@ import BrandEyeToggle from "./BrandEyeToggle";
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
   { to: "/dashboard/vehicles", icon: Car, label: "Vehicles", ready: true },
-  { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance", ready: false },
+  { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance", ready: true },
   { to: "/dashboard/alerts", icon: Bell, label: "Alerts", ready: true },
 ];
 
