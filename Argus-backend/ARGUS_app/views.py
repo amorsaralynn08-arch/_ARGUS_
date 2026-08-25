@@ -1,5 +1,6 @@
 
 from rest_framework import viewsets,mixins
+from rest_framework.pagination import PageNumberPagination
 from .models import MaintenanceRecord, SensorReading , Alert , Vehicle ,Company,User
 from .serializers import (
     ProfileUpdateSerializer,
@@ -283,6 +284,32 @@ class MaintenanceRecordViewSet(
 
     def get_queryset(self):
      return MaintenanceRecord.objects.filter(vehicle__company=self.request.user.company)
+
+    def perform_create(self, serializer):
+        serializer.save(logged_by=self.request.user)
+
+    from rest_framework.pagination import PageNumberPagination
+
+class MaintenancePagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 50
+
+
+class MaintenanceRecordViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    serializer_class = MaintenanceRecordSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["vehicle"]
+    pagination_class = MaintenancePagination
+
+    def get_queryset(self):
+        return MaintenanceRecord.objects.filter(vehicle__company=self.request.user.company)
 
     def perform_create(self, serializer):
         serializer.save(logged_by=self.request.user)

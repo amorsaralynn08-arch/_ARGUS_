@@ -1,5 +1,6 @@
 from django.urls import path , include
 from .views import (
+    MaintenanceRecordViewSet,
     SensorReadingView,
     AlertViewSet,
     TestEmailView,
@@ -24,6 +25,7 @@ router.register(r"sensor-readings",SensorReadingView,basename="sensor-reading")
 router.register(r"vehicles",VehicleViewSet,basename="vehicle",)
 router.register(r"companies", CompanyViewSet, basename="company")
 router.register(r"users",UserViewSet,basename="user")
+router.register(r"maintenance", MaintenanceRecordViewSet, basename="maintenance")
 
 urlpatterns = [
     
