@@ -1,6 +1,6 @@
 
 from rest_framework import viewsets,mixins
-from .models import SensorReading , Alert , Vehicle ,Company,User
+from .models import MaintenanceRecord, SensorReading , Alert , Vehicle ,Company,User
 from .serializers import (
     ProfileUpdateSerializer,
     SensorReadingSerializer,
@@ -13,6 +13,7 @@ from .serializers import (
     StaffUserSerializer,
     ForgotPasswordSerializer,
     ResetPasswordConfirmSerializer,
+    MaintenanceRecordSerializer,
 )
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers
 from .utils import send_test_email,send_password_changed_email,send_password_reset_email,send_password_reset_success_email
@@ -268,3 +269,20 @@ class ResetPasswordConfirmView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+class MaintenanceRecordViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    viewsets.GenericViewSet,
+):
+    serializer_class = MaintenanceRecordSerializer
+    permission_classes = [IsAuthenticated]  # tighten to a real permission class once you have one for this
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ["vehicle"]
+    pagination_class = None  # uses your project default if set, otherwise flag this — we discussed this gap before
+
+    def get_queryset(self):
+     return MaintenanceRecord.objects.filter(vehicle__company=self.request.user.company)
+
+    def perform_create(self, serializer):
+        serializer.save(logged_by=self.request.user)
