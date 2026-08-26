@@ -93,5 +93,8 @@ def get_ai_recommendation(vehicle, alerts, nearby_shops):
         response.raise_for_status()
         data = response.json()
         return data["content"][0]["text"]
-    except requests.RequestException:
+    except requests.RequestException as e:
+        print("ANTHROPIC API ERROR:", e)
+        if hasattr(e, "response") and e.response is not None:
+            print("RESPONSE BODY:", e.response.text)
         return "Sorry, the AI assistant is unavailable right now. Please try again later."
