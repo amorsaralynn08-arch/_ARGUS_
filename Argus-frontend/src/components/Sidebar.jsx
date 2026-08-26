@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import {LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut } from "lucide-react";
+import {LayoutGrid, Car, Wrench, Bell, User, Settings, LogOut , Users } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import Modal from "./Modal";
 import BrandEyeToggle from "./BrandEyeToggle";
+
 
 const navItems = [
   { to: "/dashboard", icon: LayoutGrid, label: "Overview", end: true, ready: true },
   { to: "/dashboard/vehicles", icon: Car, label: "Vehicles", ready: true },
   { to: "/dashboard/maintenance", icon: Wrench, label: "Maintenance", ready: true },
   { to: "/dashboard/alerts", icon: Bell, label: "Alerts", ready: true },
+  { to: "/dashboard/staff", icon: Users, label: "Team", ready: true },
 ];
 
 const Sidebar = () => {

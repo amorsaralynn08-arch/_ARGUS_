@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import Login from "./pages/Login";
 import FleetSetup from "./pages/FleetSetup";
 import Dashboard from "./pages/Dashboard";
@@ -12,6 +11,8 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layout/DashboardLayout";
+import Staff from '.pages/Staff';
+
 
 function App() {
   return (
@@ -52,8 +53,8 @@ function App() {
           <Route path="alerts" element={<Alerts />} />
           <Route path="profile" element={<Profile />} />
           <Route path="settings" element={<Settings />} />
-          {<Route path="maintenance" element={<Maintenance />} /> }
-          
+          <Route path="maintenance" element={<Maintenance />} /> 
+          <Route path="staff" element={<Staff />} />
           
         </Route>
          
