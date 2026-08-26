@@ -11,6 +11,17 @@ class Company(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
 
+    class Currency(models.TextChoices):
+     KES = "KES", "Kenyan Shilling"
+     USD = "USD", "US Dollar"
+
+    class UnitSystem(models.TextChoices):
+     KM = "KM", "Kilometers"
+     MILES = "MILES", "Miles"
+
+    currency = models.CharField(max_length=3, choices=Currency.choices, default=Currency.KES)
+    unit_system = models.CharField(max_length=10, choices=UnitSystem.choices, default=UnitSystem.KM)
+
     class Meta:
         ordering = ["name"]
 
@@ -39,6 +50,8 @@ class User(AbstractUser):
 
                               )
     created_at=models.DateTimeField(auto_now_add=True)
+    notify_critical_email = models.BooleanField(default=True)
+    notify_warning_email = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.username} ({self.role})"

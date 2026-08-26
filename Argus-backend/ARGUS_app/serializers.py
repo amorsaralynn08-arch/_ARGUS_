@@ -164,12 +164,20 @@ class ProfileSerializer(serializers.ModelSerializer):
             "role",
             "phone_number",
             "company",
+            "notify_critical_email",
+            "notify_warning_email",
         ]
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "phone_number"]
+        fields = [
+            "first_name",
+            "last_name",
+            "phone_number",
+            "notify_critical_email",
+            "notify_warning_email"
+            ]
 
         
 
@@ -251,6 +259,8 @@ class CompanySerializer(serializers.ModelSerializer):
             "address",
             "created_at",
             "is_active",
+            "currency", 
+            "unit_system",
         ]
         read_only_fields = [
             "created_at",
