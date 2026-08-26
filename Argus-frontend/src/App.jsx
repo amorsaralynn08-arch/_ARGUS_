@@ -11,7 +11,9 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import ProtectedRoute from "./components/ProtectedRoute";
 import DashboardLayout from "./layout/DashboardLayout";
-import Staff from '.pages/Staff';
+import Staff from "./pages/Staff";
+import DriverLayout from "./layout/DriverLayout";
+import DriverHome from "./pages/DriverHome";
 
 
 function App() {
@@ -38,7 +40,7 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <ProtectedRoute requireCompany>
+            <ProtectedRoute requireCompany allowedRoles={["FLEET_MANAGER"]}>
               <DashboardLayout />
             </ProtectedRoute>
           }
@@ -57,6 +59,20 @@ function App() {
           <Route path="staff" element={<Staff />} />
           
         </Route>
+
+
+        <Route
+               path="/driver"
+               element={
+    <ProtectedRoute requireCompany allowedRoles={["DRIVER"]}>
+      <DriverLayout />
+    </ProtectedRoute>
+  }
+>
+       <Route index element={<DriverHome />} />
+       <Route path="vehicles/:id" element={<VehicleDetail />} />
+       <Route path="profile" element={<Profile />} />
+       </Route>
          
 
         {/* Unknown Routes */}

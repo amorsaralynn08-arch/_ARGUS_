@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
 import { ArrowLeft, Sparkles } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
+import { getHomeRouteForRole } from "../utils/roleRoutes";
 
 const statusStyles = {
   ACTIVE: { label: "Normal", color: "var(--color-success)" },
@@ -13,6 +15,7 @@ const statusStyles = {
 const VehicleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [vehicle, setVehicle] = useState(null);
   const [readings, setReadings] = useState([]);
   const [alerts, setAlerts] = useState([]);
@@ -21,6 +24,8 @@ const VehicleDetail = () => {
   const [nearbyShops, setNearbyShops] = useState([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState(null);
+ 
+  
 
 
   const handleGetRecommendation = async () => {
@@ -78,7 +83,7 @@ const VehicleDetail = () => {
 
   return (
     <div>
-      <button className="back-link" onClick={() => navigate("/dashboard")}>
+      <button className="back-link" onClick={() => navigate(getHomeRouteForRole(user?.role))}>
         <ArrowLeft size={15} /> Back to Vehicles
       </button>
 

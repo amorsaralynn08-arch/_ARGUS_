@@ -39,7 +39,12 @@ class SensorReadingView(
 ):
     
     def get_queryset(self):
-     return SensorReading.objects.filter(vehicle__company=self.request.user.company)
+        user = self.request.user
+        qs = SensorReading.objects.filter(vehicle__company=user.company)
+        if user.role == User.Role.DRIVER:
+            qs = qs.filter(vehicle__driver=user)
+        return qs
+     
     serializer_class = SensorReadingSerializer  
     permission_classes = [CanViewSensorReadings]
     filter_backends = [DjangoFilterBackend]
@@ -53,8 +58,12 @@ class AlertViewSet(
 ):
     
     def get_queryset(self):
-     return Alert.objects.filter(sensor_reading__vehicle__company=self.request.user.company)
-    serializer_class = AlertSerializer
+        user = self.request.user
+        qs = Alert.objects.filter(sensor_reading__vehicle__company=user.company)
+        if user.role == User.Role.DRIVER:
+            qs = qs.filter(sensor_reading__vehicle__driver=user)
+        return qs
+    
     permission_classes = [CanManageAlerts]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["sensor_reading__vehicle","is_resolved"]
@@ -102,7 +111,12 @@ class VehicleViewSet(
     viewsets.GenericViewSet,
 ):
     def get_queryset(self):
-     return Vehicle.objects.filter(company=self.request.user.company)
+        user = self.request.user
+        qs = Vehicle.objects.filter(company=user.company)
+        if user.role == User.Role.DRIVER:
+            qs = qs.filter(driver=user)
+        return qs
+     
     serializer_class = VehicleSerializer
     permission_classes = [CanManageVehicles]
     filter_backends = [DjangoFilterBackend,SearchFilter,OrderingFilter,]

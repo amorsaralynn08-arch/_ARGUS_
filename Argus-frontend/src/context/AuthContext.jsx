@@ -8,18 +8,22 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchProfile = async () => {
-    try {
-      const { data } = await api.get("profile/");
-      setUser(data);
-    } catch (err) {
-      setUser(null);
-      localStorage.removeItem("access_token");
-      localStorage.removeItem("refresh_token");
-    } finally {
-      setLoading(false);
-    }
-  };
+ const fetchProfile = async () => {
+  try {
+    const { data } = await api.get("profile/");
+    setUser(data);
+    return data;
+  } catch (err) {
+    setUser(null);
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
+    return null;
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   useEffect(() => {
     const token = localStorage.getItem("access_token");

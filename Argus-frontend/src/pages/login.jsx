@@ -5,8 +5,9 @@ import AuthLayout from "../components/AuthLayout";
 import FormInput from "../components/FormInput";
 import Toast from "../components/Toast";
 import "../styles/auth.css";
+import { getHomeRouteForRole } from "../utils/roleRoutes";
 
-const Login = () => {
+const Login = async () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -14,6 +15,8 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
+  const userData = await login(formData.username, formData.password);
+  navigate(getHomeRouteForRole(userData?.role));
 
   useEffect(() => {
     const msg = sessionStorage.getItem("logoutMessage");
