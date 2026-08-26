@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'ARGUS_app',
     'drf_spectacular',
     "django_filters",
+    "assistant",
     
 ]
 
@@ -101,6 +102,8 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool)
 DEFAULT_FROM_EMAIL = config("DEFAULT_FROM_EMAIL")
+ANTHROPIC_API_KEY = config("ANTHROPIC_API_KEY") 
+ANTHROPIC_MODEL = config("ANTHROPIC_MODEL")
 
 
 FRONTEND_URL = config(

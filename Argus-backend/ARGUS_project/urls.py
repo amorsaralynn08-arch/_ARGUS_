@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path("api/", include("ARGUS_app.urls")),
+    path("api/assistant/", include("assistant.urls")),
 
     path(
     "api/schema/",

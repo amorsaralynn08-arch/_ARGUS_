@@ -6,7 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Home from "./pages/Home";
 import VehicleDetail from "./pages/VehicleDetail";
 import Vehicles from "./pages/Vehicles";
-// import Maintenance from "./pages/Maintenance";
+import Maintenance from "./pages/Maintenance";
 import Alerts from "./pages/Alerts";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
@@ -54,7 +54,8 @@ function App() {
           <Route path="settings" element={<Settings />} />
           {<Route path="maintenance" element={<Maintenance />} /> }
           
-         
+          
+        </Route>
          
 
         {/* Unknown Routes */}
