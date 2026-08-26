@@ -376,3 +376,22 @@ a {
   #printable-receipt, #printable-receipt * { visibility: visible; }
   #printable-receipt { position: absolute; top: 0; left: 0; width: 100%; }
 }
+
+.recommendation-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary-dim);
+  border-radius: 8px;
+  padding: 1.1rem;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-primary);
+}
+
+.shop-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 12px;
+}
+.shop-row:last-child { border-bottom: none; }

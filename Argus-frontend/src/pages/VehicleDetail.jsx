@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../api/axios";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Sparkles } from "lucide-react";
 
 const statusStyles = {
   ACTIVE: { label: "Normal", color: "var(--color-success)" },
@@ -17,7 +17,25 @@ const VehicleDetail = () => {
   const [readings, setReadings] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [recommendation, setRecommendation] = useState(null);
+  const [nearbyShops, setNearbyShops] = useState([]);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState(null);
 
+
+  const handleGetRecommendation = async () => {
+  setAiLoading(true);
+  setAiError(null);
+  try {
+    const { data } = await api.get(`assistant/recommend/${id}/`);
+    setRecommendation(data.recommendation);
+    setNearbyShops(data.nearby_shops);
+  } catch (err) {
+    setAiError("Sorry, something went wrong. Please try again later.");
+  } finally {
+    setAiLoading(false);
+  }
+};
 
    useEffect(() => {
     const load = async () => {
@@ -105,6 +123,40 @@ const VehicleDetail = () => {
           ))}
         </div>
       )}
+
+      <h2 className="section-title">AI Recommendation</h2>
+
+{!recommendation && !aiLoading && (
+  <button className="add-btn" onClick={handleGetRecommendation}>
+    <Sparkles size={15} /> Get Recommendation
+  </button>
+)}
+
+{aiLoading && (
+  <div className="table-empty">Thinking...</div>
+)}
+
+{aiError && (
+  <p className="form-error">{aiError}</p>
+)}
+
+{recommendation && (
+  <div className="recommendation-box">
+    <p>{recommendation}</p>
+
+    {nearbyShops.length > 0 && (
+      <>
+        <div className="settings-label" style={{ marginTop: 16, marginBottom: 8 }}>Nearby shops</div>
+        {nearbyShops.map((shop, i) => (
+          <div key={i} className="shop-row">
+            <span>{shop.name}</span>
+            <span style={{ color: "var(--color-text-secondary)", fontSize: 12 }}>{shop.address}</span>
+          </div>
+        ))}
+      </>
+    )}
+  </div>
+)}
     </div>
   );
 };
