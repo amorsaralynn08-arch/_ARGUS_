@@ -1,6 +1,7 @@
 
 from rest_framework import viewsets,mixins
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.exceptions import PermissionDenied
 from .models import MaintenanceRecord, SensorReading , Alert , Vehicle ,Company,User
 from .serializers import (
     ProfileUpdateSerializer,
@@ -323,7 +324,13 @@ class MaintenanceRecordViewSet(
     pagination_class = MaintenancePagination
 
     def get_queryset(self):
-        return MaintenanceRecord.objects.filter(vehicle__company=self.request.user.company)
+        user = self.request.user
+        qs = MaintenanceRecord.objects.filter(vehicle__company=user.company)
+        if user.role == User.Role.DRIVER:
+            qs = qs.filter(vehicle__driver=user)
+        return qs
 
     def perform_create(self, serializer):
+        if self.request.user.role == User.Role.DRIVER:
+            raise PermissionDenied("Drivers cannot log maintenance records.")
         serializer.save(logged_by=self.request.user)
