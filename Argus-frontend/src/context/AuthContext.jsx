@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (username, password) => {
     await authService.login(username, password);
-    await fetchProfile();
+    const userData = await fetchProfile();
+    return userData;
   };
 
 const register = async (userData) => {

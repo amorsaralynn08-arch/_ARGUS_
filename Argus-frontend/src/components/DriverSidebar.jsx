@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Car, User, LogOut } from "lucide-react";
+import { Car, Bell, Wrench, User, LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import BrandEyeToggle from "./BrandEyeToggle";
@@ -24,12 +24,21 @@ const DriverSidebar = () => {
         <span>ARGUS</span>
       </div>
 
-      <nav className="sidebar-nav">
-        <NavLink to="/driver" end className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
-          <Car size={17} aria-hidden="true" />
-          <span>My Vehicle</span>
-        </NavLink>
-      </nav>
+      
+  <nav className="sidebar-nav">
+  <NavLink to="/driver" end className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+    <Car size={17} aria-hidden="true" />
+    <span>My Vehicle</span>
+  </NavLink>
+  <NavLink to="/driver/alerts" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+    <Bell size={17} aria-hidden="true" />
+    <span>Alerts</span>
+  </NavLink>
+  <NavLink to="/driver/maintenance" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+    <Wrench size={17} aria-hidden="true" />
+    <span>Maintenance</span>
+  </NavLink>
+  </nav>
 
       <div className="sidebar-footer">
         <NavLink to="/driver/profile" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>

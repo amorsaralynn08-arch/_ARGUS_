@@ -34,22 +34,27 @@ const DriverHome = () => {
       ) : vehicles.length === 0 ? (
         <div className="table-empty">No vehicle assigned to you yet.</div>
       ) : (
-        <div className="vehicle-table">
-          <div className="table-row table-head">
-            <div>Vehicle</div><div>Reg. number</div><div>Status</div><div>Year</div>
-          </div>
-          {vehicles.map((v) => {
-            const s = statusStyles[v.status] || statusStyles.ACTIVE;
-            return (
-              <div className="table-row" key={v.id} onClick={() => navigate(`/driver/vehicles/${v.id}`)} style={{ cursor: "pointer" }}>
-                <div>{v.manufacturer} {v.model}</div>
-                <div>{v.registration_number}</div>
-                <div style={{ color: s.color }}>{s.label}</div>
-                <div>{v.year}</div>
+        vehicles.map((v) => {
+          const s = statusStyles[v.status] || statusStyles.ACTIVE;
+          return (
+            <div
+              key={v.id}
+              className="detail-info-grid"
+              style={{ gridTemplateColumns: "1fr", cursor: "pointer", marginBottom: 12 }}
+              onClick={() => navigate(`/driver/vehicles/${v.id}`)}
+            >
+              <div style={{ padding: "1.5rem" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ fontFamily: "var(--font-display)", fontSize: "1.1rem" }}>{v.manufacturer} {v.model}</div>
+                  <div className="status-badge" style={{ color: s.color, borderColor: s.color }}>{s.label}</div>
+                </div>
+                <div style={{ fontSize: 13, color: "var(--color-text-secondary)", marginTop: 6 }}>
+                  {v.registration_number} · {v.year}
+                </div>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })
       )}
     </div>
   );

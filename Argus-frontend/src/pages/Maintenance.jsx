@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
 import api from "../api/axios";
 import { Plus, ChevronLeft, ChevronRight, Printer } from "lucide-react";
 import Modal from "../components/Modal";
@@ -29,14 +30,18 @@ const Maintenance = () => {
   useEffect(() => { fetchRecords(page); }, [page]);
 
   const totalPages = Math.ceil(count / pageSize) || 1;
+  const { user } = useAuth();
+  const isDriver = user?.role === "DRIVER";
 
   return (
     <div>
       <div className="table-toolbar">
         <h1 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem" }}>Maintenance</h1>
-        <button className="add-btn" onClick={() => setShowAddModal(true)}>
-          <Plus size={15} /> Log Maintenance
-        </button>
+        {!isDriver && (
+  <button className="add-btn" onClick={() => setShowAddModal(true)}>
+    <Plus size={15} /> Log Maintenance
+  </button>
+)}
       </div>
 
       <div className="vehicle-table">
@@ -57,9 +62,13 @@ const Maintenance = () => {
               <div>{r.date_performed}</div>
               <div>{r.logged_by_name || "—"}</div>
               <div>
-                <button className="icon-btn" onClick={() => setReceiptRecord(r)} title="Print receipt">
-                  <Printer size={15} />
-                </button>
+              {!isDriver && (
+  <div>
+    <button className="icon-btn" onClick={() => setReceiptRecord(r)} title="Print receipt">
+      <Printer size={15} />
+    </button>
+  </div>
+)}
               </div>
             </div>
           ))

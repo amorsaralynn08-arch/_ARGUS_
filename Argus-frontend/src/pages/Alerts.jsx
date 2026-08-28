@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../api/axios";
+import { useAuth } from "../context/AuthContext";
+import { getHomeRouteForRole } from "../utils/roleRoutes";
 
 const severityStyles = {
   CRITICAL: "var(--color-danger)",
@@ -27,6 +29,8 @@ const Alerts = () => {
     load();
   }, []);
 
+   const { user } = useAuth();
+   
   return (
     <div>
       <h1 style={{ fontFamily: "var(--font-display)", fontSize: "1.3rem", marginBottom: "1.5rem" }}>
@@ -48,7 +52,7 @@ const Alerts = () => {
               className="table-row"
               key={a.id}
               style={{ gridTemplateColumns: "0.8fr 1.5fr 2fr 1fr", cursor: "pointer" }}
-              onClick={() => navigate(`/dashboard/vehicles/${a.vehicle.id}`)}
+              onClick={() => navigate(`${getHomeRouteForRole(user?.role)}/vehicles/${a.vehicle.id}`)}
             >
               <div style={{ color: severityStyles[a.severity] || "var(--color-text-primary)", fontWeight: 500 }}>{a.severity}</div>
               <div>{a.vehicle.manufacturer} {a.vehicle.model} · {a.vehicle.registration_number}</div>

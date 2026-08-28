@@ -14,6 +14,8 @@ import DashboardLayout from "./layout/DashboardLayout";
 import Staff from "./pages/Staff";
 import DriverLayout from "./layout/DriverLayout";
 import DriverHome from "./pages/DriverHome";
+import Alerts from "./pages/Alerts";
+import Maintenance from "./pages/Maintenance";
 
 
 function App() {
@@ -72,6 +74,8 @@ function App() {
        <Route index element={<DriverHome />} />
        <Route path="vehicles/:id" element={<VehicleDetail />} />
        <Route path="profile" element={<Profile />} />
+       <Route path="alerts" element={<Alerts />} />
+       <Route path="maintenance" element={<Maintenance />} />
        </Route>
          
 
