@@ -4,6 +4,7 @@ import api from "../api/axios";
 import { ArrowLeft, Sparkles } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getHomeRouteForRole } from "../utils/roleRoutes";
+import { AlertTriangle } from "lucide-react";
 
 const statusStyles = {
   ACTIVE: { label: "Normal", color: "var(--color-success)" },
@@ -16,6 +17,7 @@ const VehicleDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const isDriver = user?.role === "DRIVER";
   const [vehicle, setVehicle] = useState(null);
   const [readings, setReadings] = useState([]);
   const [alerts, setAlerts] = useState([]);
@@ -96,6 +98,18 @@ const VehicleDetail = () => {
         </div>
         <div className="status-badge" style={{ color: s.color, borderColor: s.color }}>{s.label}</div>
       </div>
+
+      {isDriver && (
+  <button
+    className="add-btn"
+    style={{ background: "var(--color-danger)", marginTop: 12 }}
+    onClick={() => navigate("/driver/messages", { state: { prefill: `Reporting an issue with ${vehicle.manufacturer} ${vehicle.model} (${vehicle.registration_number}): ` } })}
+  >
+    <AlertTriangle size={15} /> Report an Issue
+  </button>
+)}
+
+
 
       <div className="detail-info-grid">
         <div><span>Year</span><div>{vehicle.year}</div></div>

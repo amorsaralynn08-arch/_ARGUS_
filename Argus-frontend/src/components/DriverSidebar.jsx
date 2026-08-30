@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Car, Bell, Wrench, User, LogOut } from "lucide-react";
+import { Car, Bell, Wrench, User,Settings , LogOut } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useTheme } from "../context/ThemeContext";
 import BrandEyeToggle from "./BrandEyeToggle";
@@ -44,6 +44,10 @@ const DriverSidebar = () => {
         <NavLink to="/driver/profile" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
           <User size={17} aria-hidden="true" />
           <span>Profile</span>
+        </NavLink>
+        <NavLink to="/driver/settings" className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+        <Settings size={17} aria-hidden="true" />
+        <span>Settings</span>
         </NavLink>
         <button className="sidebar-link logout-btn" onClick={() => setShowConfirm(true)}>
           <LogOut size={17} aria-hidden="true" />

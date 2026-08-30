@@ -414,3 +414,15 @@ class MessageContactsView(APIView):
                 "unread_count": unread,
             })
         return Response(data)
+
+class VehicleRecommendationView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, vehicle_id):
+        try:
+            vehicle = Vehicle.objects.get(id=vehicle_id, company=request.user.company)
+            if request.user.role == User.Role.DRIVER and vehicle.driver_id != request.user.id:
+                return Response({"error": "Vehicle not found."}, status=status.HTTP_404_NOT_FOUND)
+        except Vehicle.DoesNotExist:
+            return Response({"error": "Vehicle not found."}, status=status.HTTP_404_NOT_FOUND)
+        

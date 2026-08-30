@@ -15,6 +15,7 @@ import Staff from "./pages/Staff";
 import DriverLayout from "./layout/DriverLayout";
 import DriverHome from "./pages/DriverHome";
 import Messages from "./pages/Messages";
+import DriverSettings from "./pages/DriverSettings";
 
 
 function App() {
@@ -77,6 +78,7 @@ function App() {
        <Route path="alerts" element={<Alerts />} />
        <Route path="maintenance" element={<Maintenance />} />
        <Route path="messages" element={<Messages />} />
+       <Route path="settings" element={<DriverSettings />} />
        </Route>
          
 

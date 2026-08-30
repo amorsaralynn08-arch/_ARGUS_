@@ -2,11 +2,18 @@ import { useState, useEffect, useRef } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { Send } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 const formatTime = (iso) => new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
 const Messages = () => {
   const { user } = useAuth();
+  const location = useLocation();
+  
+useEffect(() => {
+  if (location.state?.prefill) setText(location.state.prefill);
+}, [location.state]);
+
   const isFleetManager = user?.role === "FLEET_MANAGER";
   const [contacts, setContacts] = useState([]);
   const [activeContact, setActiveContact] = useState(null);
