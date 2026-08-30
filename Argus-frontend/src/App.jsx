@@ -14,8 +14,7 @@ import DashboardLayout from "./layout/DashboardLayout";
 import Staff from "./pages/Staff";
 import DriverLayout from "./layout/DriverLayout";
 import DriverHome from "./pages/DriverHome";
-import Alerts from "./pages/Alerts";
-import Maintenance from "./pages/Maintenance";
+
 
 
 function App() {

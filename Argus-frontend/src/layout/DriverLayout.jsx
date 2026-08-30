@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import DriverSidebar from "../components/DriverSidebar";
+import TopBar from "../components/TopBar";
 import ScatteredEyes from "../components/ScatteredEyes";
 import "../styles/dashboard.css";
 
@@ -8,6 +9,7 @@ const DriverLayout = () => (
     <DriverSidebar />
     <main className="dashboard-content">
       <ScatteredEyes />
+       <TopBar />
       <div style={{ position: "relative", zIndex: 1 }}>
         <Outlet />
       </div>
