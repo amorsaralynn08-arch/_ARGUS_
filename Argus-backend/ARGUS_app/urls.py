@@ -12,6 +12,9 @@ from .views import (
     UserViewSet,
     ForgotPasswordView,
     ResetPasswordConfirmView,
+    MessageListView,
+    MessageContactsView,
+    UnreadMessageCountView,
 
 )
 from rest_framework.routers import DefaultRouter
@@ -38,6 +41,9 @@ urlpatterns = [
     path("register/", RegisterView.as_view(), name="register"),
     path("token/",TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("messages/", MessageListView.as_view(), name="messages"),
+    path("messages/contacts/", MessageContactsView.as_view(), name="message-contacts"),
+    path("messages/unread-count/", UnreadMessageCountView.as_view(), name="message-unread-count"),
 
 ]
 

@@ -2,7 +2,7 @@
 from rest_framework import viewsets,mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import PermissionDenied
-from .models import MaintenanceRecord, SensorReading , Alert , Vehicle ,Company,User
+from .models import MaintenanceRecord, SensorReading , Alert , Vehicle ,Company,User,Message
 from .serializers import (
     ProfileUpdateSerializer,
     SensorReadingSerializer,
@@ -16,6 +16,7 @@ from .serializers import (
     ForgotPasswordSerializer,
     ResetPasswordConfirmSerializer,
     MaintenanceRecordSerializer,
+    MessageSerializer,
 )
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers
 from .utils import send_test_email,send_password_changed_email,send_password_reset_email,send_password_reset_success_email
@@ -29,6 +30,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.conf import settings
+from django.db.models import Q
 
 # Create your views here.
 class SensorReadingView(
@@ -334,3 +336,60 @@ class MaintenanceRecordViewSet(
         if self.request.user.role == User.Role.DRIVER:
             raise PermissionDenied("Drivers cannot log maintenance records.")
         serializer.save(logged_by=self.request.user)
+
+
+
+class MessageContactsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if user.role == User.Role.FLEET_MANAGER:
+            contacts = User.objects.filter(company=user.company).exclude(id=user.id).exclude(role=User.Role.FLEET_MANAGER)
+        else:
+            contacts = User.objects.filter(company=user.company, role=User.Role.FLEET_MANAGER)
+
+        data = [
+            {"id": c.id, "name": f"{c.first_name} {c.last_name}".strip() or c.username, "role": c.role}
+            for c in contacts
+        ]
+        return Response(data)
+
+
+class MessageListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        other_id = request.query_params.get("with")
+        if not other_id:
+            return Response({"error": "with parameter required"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            other = User.objects.get(id=other_id, company=request.user.company)
+        except User.DoesNotExist:
+            return Response({"error": "User not found in your company."}, status=status.HTTP_404_NOT_FOUND)
+
+        messages = Message.objects.filter(
+            Q(sender=request.user, recipient=other) | Q(sender=other, recipient=request.user)
+        )
+        Message.objects.filter(sender=other, recipient=request.user, is_read=False).update(is_read=True)
+        return Response(MessageSerializer(messages, many=True).data)
+
+    def post(self, request):
+        content = request.data.get("content", "").strip()
+        if not content:
+            return Response({"error": "Message cannot be empty."}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            recipient = User.objects.get(id=request.data.get("recipient"), company=request.user.company)
+        except User.DoesNotExist:
+            return Response({"error": "Recipient not found in your company."}, status=status.HTTP_404_NOT_FOUND)
+
+        message = Message.objects.create(sender=request.user, recipient=recipient, content=content)
+        return Response(MessageSerializer(message).data, status=status.HTTP_201_CREATED)
+
+
+class UnreadMessageCountView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        count = Message.objects.filter(recipient=request.user, is_read=False).count()
+        return Response({"count": count})
