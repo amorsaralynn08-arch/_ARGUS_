@@ -13,6 +13,14 @@ const AddVehicleForm = ({ onSuccess }) => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [drivers, setDrivers] = useState([]);
+
+useEffect(() => {
+  api.get("users/").then(({ data }) => {
+    const list = Array.isArray(data) ? data : data.results || [];
+    setDrivers(list.filter((u) => u.role === "DRIVER"));
+  });
+}, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,6 +48,15 @@ const AddVehicleForm = ({ onSuccess }) => {
       <FormInput label="Model" name="model" value={formData.model} onChange={handleChange} error={errors.model} />
       <FormInput label="Year" name="year" type="number" value={formData.year} onChange={handleChange} error={errors.year} />
       <FormInput label="VIN" name="vin" value={formData.vin} onChange={handleChange} error={errors.vin} />
+      <div className="form-group">
+  <label>Assign driver (optional)</label>
+  <select name="driver" value={formData.driver || ""} onChange={handleChange} className="select-input">
+    <option value="">Unassigned</option>
+    {drivers.map((d) => (
+      <option key={d.id} value={d.id}>{d.first_name} {d.last_name}</option>
+    ))}
+  </select>
+</div>
       <button type="submit" disabled={loading}>{loading ? "Adding..." : "Add Vehicle"}</button>
     </form>
   );

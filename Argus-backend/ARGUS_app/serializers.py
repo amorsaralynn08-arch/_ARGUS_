@@ -108,11 +108,18 @@ class ResetPasswordConfirmSerializer(serializers.Serializer):
         return data
 
 class VehicleSerializer(serializers.ModelSerializer):
+    driver_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Vehicle
-        fields = "__all__"
+        fields = ["id", "registration_number", "manufacturer", "model", "year",
+            "vin", "company", "driver", "driver_name", "status", "created_at"]
         read_only_fields = ["company"]
+
+    def get_driver_name(self, obj):
+        if obj.driver:
+            return f"{obj.driver.first_name} {obj.driver.last_name}".strip() or obj.driver.username
+        return None
 
     def validate_vin(self, value):
          value = value.upper().strip()

@@ -26,6 +26,9 @@ const VehicleDetail = () => {
   const [nearbyShops, setNearbyShops] = useState([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState(null);
+  const isFleetManager = user?.role === "FLEET_MANAGER";
+const [drivers, setDrivers] = useState([]);
+const [assigningDriver, setAssigningDriver] = useState(false);
  
   
 
@@ -83,6 +86,27 @@ const VehicleDetail = () => {
   const s = statusStyles[vehicle.status] || statusStyles.ACTIVE;
   const latestReading = readings[0];
 
+  useEffect(() => {
+  if (isFleetManager) {
+    api.get("users/").then(({ data }) => {
+      const list = Array.isArray(data) ? data : data.results || [];
+      setDrivers(list.filter((u) => u.role === "DRIVER"));
+    });
+  }
+}, [isFleetManager]);
+
+const handleAssignDriver = async (driverId) => {
+  setAssigningDriver(true);
+  try {
+    const { data } = await api.patch(`vehicles/${id}/`, { driver: driverId || null });
+    setVehicle(data);
+  } catch (err) {
+    console.error("Failed to assign driver:", err);
+  } finally {
+    setAssigningDriver(false);
+  }
+};
+
   return (
     <div>
       <button className="back-link" onClick={() => navigate(getHomeRouteForRole(user?.role))}>
@@ -114,7 +138,24 @@ const VehicleDetail = () => {
       <div className="detail-info-grid">
         <div><span>Year</span><div>{vehicle.year}</div></div>
         <div><span>VIN</span><div>{vehicle.vin}</div></div>
-        <div><span>Driver</span><div>{vehicle.driver_name || "Unassigned"}</div></div>
+        <div>
+  <span>Driver</span>
+  {isFleetManager ? (
+    <select
+      className="select-input"
+      value={vehicle.driver || ""}
+      onChange={(e) => handleAssignDriver(e.target.value)}
+      disabled={assigningDriver}
+    >
+      <option value="">Unassigned</option>
+      {drivers.map((d) => (
+        <option key={d.id} value={d.id}>{d.first_name} {d.last_name}</option>
+      ))}
+    </select>
+  ) : (
+    <div>{vehicle.driver_name || "Unassigned"}</div>
+  )}
+</div>
       </div>
 
       <h2 className="section-title">Recent readings</h2>
