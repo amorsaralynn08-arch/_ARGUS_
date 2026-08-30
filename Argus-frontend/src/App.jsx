@@ -14,7 +14,7 @@ import DashboardLayout from "./layout/DashboardLayout";
 import Staff from "./pages/Staff";
 import DriverLayout from "./layout/DriverLayout";
 import DriverHome from "./pages/DriverHome";
-
+import Messages from "./pages/Messages";
 
 
 function App() {
@@ -58,6 +58,7 @@ function App() {
           <Route path="settings" element={<Settings />} />
           <Route path="maintenance" element={<Maintenance />} /> 
           <Route path="staff" element={<Staff />} />
+          <Route path="messages" element={<Messages />} />
           
         </Route>
 
@@ -75,6 +76,7 @@ function App() {
        <Route path="profile" element={<Profile />} />
        <Route path="alerts" element={<Alerts />} />
        <Route path="maintenance" element={<Maintenance />} />
+       <Route path="messages" element={<Messages />} />
        </Route>
          
 
