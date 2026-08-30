@@ -5,6 +5,8 @@ import { ArrowLeft, Sparkles, AlertTriangle } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { getHomeRouteForRole } from "../utils/roleRoutes";
 import Modal from "../components/Modal";
+import { Zap } from "lucide-react";
+import SimulateReadingForm from "../components/SimulateReadingForm";
 
 
 const statusStyles = {
@@ -30,10 +32,11 @@ const VehicleDetail = () => {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState(null);
   const [drivers, setDrivers] = useState([]);
-const [showAssignModal, setShowAssignModal] = useState(false);
-const [selectedDriverId, setSelectedDriverId] = useState("");
-const [assigningDriver, setAssigningDriver] = useState(false);
-const [assignError, setAssignError] = useState(null);
+  const [showAssignModal, setShowAssignModal] = useState(false);
+  const [selectedDriverId, setSelectedDriverId] = useState("");
+  const [assigningDriver, setAssigningDriver] = useState(false);
+  const [assignError, setAssignError] = useState(null);
+  const [showSimulateModal, setShowSimulateModal] = useState(false);
 
   const handleGetRecommendation = async () => {
     setAiLoading(true);
@@ -68,6 +71,17 @@ const handleConfirmAssign = async () => {
   } finally {
     setAssigningDriver(false);
   }
+};
+
+const reloadReadingsAndAlerts = async () => {
+  try {
+    const { data } = await api.get(`sensor-readings/?vehicle=${id}`);
+    setReadings(Array.isArray(data) ? data : data.results || []);
+  } catch (err) {}
+  try {
+    const { data } = await api.get(`alerts/?sensor_reading__vehicle=${id}`);
+    setAlerts(Array.isArray(data) ? data : data.results || []);
+  } catch (err) {}
 };
   
   useEffect(() => {
@@ -156,6 +170,12 @@ const handleConfirmAssign = async () => {
       <button className="link-btn" onClick={openAssignModal}>Change</button>
        )}
       </div>
+      {isFleetManager && (
+      <button className="add-btn" style={{ marginTop: 12, marginLeft: 8 }} onClick={() => setShowSimulateModal(true)}>
+      <Zap size={15} /> Simulate Reading
+      </button>
+      )}
+
       </div>
       </div>
 
@@ -232,6 +252,14 @@ const handleConfirmAssign = async () => {
       </button>
       <button className="confirm-btn" onClick={() => setShowAssignModal(false)}>Cancel</button>
     </div>
+  </Modal>
+)}
+{showSimulateModal && (
+  <Modal title="Simulate Sensor Reading" onClose={() => setShowSimulateModal(false)}>
+    <SimulateReadingForm
+      vehicleId={id}
+      onSuccess={() => { setShowSimulateModal(false); reloadReadingsAndAlerts(); }}
+    />
   </Modal>
 )}
     </div>
