@@ -428,3 +428,25 @@ a {
   opacity: 0.7;
   margin-top: 3px;
 }
+
+.select-boxed {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+}
+.select-boxed:focus { outline: none; border-color: var(--color-primary); }
+
+.link-btn {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 0;
+}
+.link-btn:hover { color: var(--color-primary-hover); }
