@@ -358,3 +358,14 @@ class MaintenanceRecordSerializer(serializers.ModelSerializer):
 
     def get_logged_by_name(self, obj):
         return obj.logged_by.username if obj.logged_by else None
+
+class MessageSerializer(serializers.ModelSerializer):
+    sender_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Message
+        fields = ["id", "sender", "sender_name", "recipient", "content", "created_at", "is_read"]
+        read_only_fields = ["sender", "created_at", "is_read"]
+
+    def get_sender_name(self, obj):
+        return obj.sender.username
