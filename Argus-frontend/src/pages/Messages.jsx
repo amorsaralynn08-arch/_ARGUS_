@@ -3,6 +3,8 @@ import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { Send } from "lucide-react";
 
+const formatTime = (iso) => new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
 const Messages = () => {
   const { user } = useAuth();
   const isFleetManager = user?.role === "FLEET_MANAGER";
@@ -13,13 +15,24 @@ const Messages = () => {
   const [loading, setLoading] = useState(true);
   const bottomRef = useRef(null);
 
-  useEffect(() => {
+  const fetchContacts = () => {
     api.get("messages/contacts/").then(({ data }) => {
       setContacts(data);
-      if (!isFleetManager && data.length > 0) setActiveContact(data[0]);
       setLoading(false);
     }).catch(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchContacts();
+    const interval = setInterval(fetchContacts, 8000);
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (!isFleetManager && contacts.length > 0 && !activeContact) {
+      setActiveContact(contacts[0]);
+    }
+  }, [contacts, isFleetManager]);
 
   useEffect(() => {
     if (!activeContact) return;
@@ -59,7 +72,10 @@ const Messages = () => {
           ) : (
             contacts.map((c) => (
               <div key={c.id} className={`contact-row${activeContact?.id === c.id ? " active" : ""}`} onClick={() => setActiveContact(c)}>
-                <div>{c.name}</div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div>{c.name}</div>
+                  {c.unread_count > 0 && <span className="contact-badge">{c.unread_count}</span>}
+                </div>
                 <div style={{ fontSize: 11, color: "var(--color-text-secondary)" }}>{c.role}</div>
               </div>
             ))
@@ -74,9 +90,18 @@ const Messages = () => {
           <>
             <div className="conversation-header">{activeContact.name}</div>
             <div className="conversation-body">
-              {messages.map((m) => (
-                <div key={m.id} className={`message-bubble${m.sender === user.id ? " own" : ""}`}>{m.content}</div>
-              ))}
+              {messages.map((m) => {
+                const isOwn = m.sender === user.id;
+                return (
+                  <div key={m.id} className={`message-bubble${isOwn ? " own" : ""}`}>
+                    <div>{m.content}</div>
+                    <div className="message-meta">
+                      {formatTime(m.created_at)}
+                      {isOwn && <span> · {m.is_read ? "Seen" : "Delivered"}</span>}
+                    </div>
+                  </div>
+                );
+              })}
               <div ref={bottomRef} />
             </div>
             <form className="conversation-input" onSubmit={handleSend}>

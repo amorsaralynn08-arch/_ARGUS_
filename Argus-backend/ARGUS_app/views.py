@@ -393,3 +393,24 @@ class UnreadMessageCountView(APIView):
     def get(self, request):
         count = Message.objects.filter(recipient=request.user, is_read=False).count()
         return Response({"count": count})
+
+class MessageContactsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        if user.role == User.Role.FLEET_MANAGER:
+            contacts = User.objects.filter(company=user.company).exclude(id=user.id).exclude(role=User.Role.FLEET_MANAGER)
+        else:
+            contacts = User.objects.filter(company=user.company, role=User.Role.FLEET_MANAGER)
+
+        data = []
+        for c in contacts:
+            unread = Message.objects.filter(sender=c, recipient=user, is_read=False).count()
+            data.append({
+                "id": c.id,
+                "name": f"{c.first_name} {c.last_name}".strip() or c.username,
+                "role": c.role,
+                "unread_count": unread,
+            })
+        return Response(data)
