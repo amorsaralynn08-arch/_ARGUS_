@@ -59,11 +59,12 @@ const handleConfirmAssign = async () => {
   setAssigningDriver(true);
   setAssignError(null);
   try {
-    const { data } = await api.patch(`vehicles/${id}/`, { driver: selectedDriverId || null });
+    const { data } = await api.patch(`vehicles/${id}/`, { driver: selectedDriverId ? Number(selectedDriverId) : null });
     setVehicle(data);
     setShowAssignModal(false);
   } catch (err) {
-    setAssignError(err.response?.data?.driver?.[0] || "Failed to assign driver. Please try again.");
+    console.error("Assign driver error:", err.response?.data);
+    setAssignError("Couldn't assign this driver. Please try again, or pick a different one.");
   } finally {
     setAssigningDriver(false);
   }
