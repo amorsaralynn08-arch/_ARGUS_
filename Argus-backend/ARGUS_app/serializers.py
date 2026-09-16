@@ -5,18 +5,15 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 import re
+from .health_scoring import compute_health, create_alerts_for_reading
 class SensorReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorReading
-        fields =  [
-            "id",
-            "vehicle",
-            "temperature",
-            "vibration",
-            "potentiometer_value",
-            "created_at",
+        fields = [
+            "id", "vehicle", "temperature", "vibration",
+            "potentiometer_value", "health_score", "health_status", "created_at",
         ]
-        read_only_fields = ["created_at"]
+        read_only_fields = ["created_at", "health_score", "health_status"]
 
     def validate_temperature(self,value):
          if value < -40 or value >150:
@@ -32,6 +29,19 @@ class SensorReadingSerializer(serializers.ModelSerializer):
          if value < 0 or value > 4095:
           raise serializers.ValidationError("Potentiometer value must be withing the 0 - 4095 threshhold")
          return value
+
+    def create(self, validated_data):
+        score, status, statuses = compute_health(
+            validated_data["temperature"],
+            validated_data["vibration"],
+            validated_data["potentiometer_value"],
+        )
+        validated_data["health_score"] = score
+        validated_data["health_status"] = status
+
+        reading = super().create(validated_data)
+        create_alerts_for_reading(reading, statuses, score)
+        return reading
 
 
 class AlertSerializer(serializers.ModelSerializer):

@@ -6,7 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { getHomeRouteForRole } from "../utils/roleRoutes";
 import Modal from "../components/Modal";
 import { Zap } from "lucide-react";
-import SimulateReadingForm from "../components/SimulateReadingForm";
+import SimulateReadingForm from "../components/SimulateReadingForm";b
 
 
 const statusStyles = {
