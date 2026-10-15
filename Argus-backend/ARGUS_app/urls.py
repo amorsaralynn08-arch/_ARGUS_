@@ -15,6 +15,7 @@ from .views import (
     MessageListView,
     MessageContactsView,
     UnreadMessageCountView,
+    DeviceReadingView,
 
 )
 from rest_framework.routers import DefaultRouter
@@ -44,6 +45,7 @@ urlpatterns = [
     path("messages/", MessageListView.as_view(), name="messages"),
     path("messages/contacts/", MessageContactsView.as_view(), name="message-contacts"),
     path("messages/unread-count/", UnreadMessageCountView.as_view(), name="message-unread-count"),
+    path("device/readings/", DeviceReadingView.as_view(), name="device-readings"),
 
 ]
 
