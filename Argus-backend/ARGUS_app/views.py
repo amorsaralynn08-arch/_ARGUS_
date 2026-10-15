@@ -1,4 +1,6 @@
 
+from pyclbr import Class
+
 from rest_framework import viewsets,mixins
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import PermissionDenied
@@ -18,7 +20,7 @@ from .serializers import (
     MaintenanceRecordSerializer,
     MessageSerializer,
 )
-from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers
+from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers , HasDeviceKey
 from .utils import send_test_email,send_password_changed_email,send_password_reset_email,send_password_reset_success_email
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -426,4 +428,21 @@ class VehicleRecommendationView(APIView):
                 return Response({"error": "Vehicle not found."}, status=status.HTTP_404_NOT_FOUND)
         except Vehicle.DoesNotExist:
             return Response({"error": "Vehicle not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class DeviceReadingView(APIView):
+    authentication_classes =[] #no authentication for device readings, we use API key instead
+    permission_classes =[HasDeviceKey]
+
+    def post(self,request):
+        serializer = SensorReadingSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        reading = serializer.save()
+        return Response({
+            "id": reading.id,
+            "health_score": reading.health_score,
+            "health_status": reading.health_status,
+        },
+
+        status=status.HTTP_201_CREATED
         
+        )
