@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { X } from "lucide-react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
 import { getHomeRouteForRole } from "../utils/roleRoutes";
@@ -17,14 +18,6 @@ const emptyForm = {
   performed_by: "",
   cost: "",
   date_performed: "",
-};
-
-const fieldStyle = {
-  width: "100%",
-  padding: "0.5rem",
-  marginTop: "0.25rem",
-  marginBottom: "0.75rem",
-  boxSizing: "border-box",
 };
 
 const Alerts = () => {
@@ -124,6 +117,7 @@ const Alerts = () => {
                   <span style={{ color: "var(--color-text-secondary)", fontSize: 12 }}>Open</span>
                 ) : (
                   <button
+                    className="link-btn"
                     onClick={(e) => {
                       e.stopPropagation();
                       openResolve(a);
@@ -139,74 +133,71 @@ const Alerts = () => {
       </div>
 
       {resolving && (
-        <div
-          onClick={closeResolve}
-          style={{
-            position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)",
-            display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1000,
-          }}
-        >
+        <div className="modal-overlay" onClick={closeResolve}>
           <form
+            className="modal-box"
             onClick={(e) => e.stopPropagation()}
             onSubmit={submitResolve}
-            style={{
-              background: "var(--color-surface, #fff)",
-              color: "var(--color-text-primary)",
-              padding: "1.5rem", borderRadius: 12,
-              width: "min(480px, 92vw)", maxHeight: "90vh", overflowY: "auto",
-            }}
           >
-            <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>Resolve alert</h2>
-            <p style={{ fontSize: 13, color: "var(--color-text-secondary)" }}>
+            <div className="modal-header">
+              <span>Resolve alert</span>
+              <button type="button" className="modal-close" onClick={closeResolve}>
+                <X size={16} />
+              </button>
+            </div>
+
+            <p style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 0, marginBottom: "1rem" }}>
               {resolving.vehicle.registration_number} · {resolving.message}
             </p>
 
-            <label>
-              Outcome
-              <select name="outcome" value={form.outcome} onChange={updateField} style={fieldStyle}>
+            <div className="form-group">
+              <label className="form-label">Outcome</label>
+              <select name="outcome" value={form.outcome} onChange={updateField} className="form-input">
                 <option value="FIXED">Fixed (work was done)</option>
                 <option value="FALSE_ALARM">False alarm (no work needed)</option>
               </select>
-            </label>
+            </div>
 
-            <label>
-              {form.outcome === "FIXED" ? "What was done?" : "Why is this a false alarm?"}
+            <div className="form-group">
+              <label className="form-label">
+                {form.outcome === "FIXED" ? "What was done?" : "Why is this a false alarm?"}
+              </label>
               <textarea
                 name="note" value={form.note} onChange={updateField}
-                required rows={3} style={fieldStyle}
+                required rows={3} className="form-input"
               />
-            </label>
+            </div>
 
             {form.outcome === "FIXED" && (
               <>
-                <label>
-                  Service type
+                <div className="form-group">
+                  <label className="form-label">Service type</label>
                   <input
                     name="service_type" value={form.service_type} onChange={updateField}
-                    required placeholder="e.g. Coolant flush" style={fieldStyle}
+                    required placeholder="e.g. Coolant flush" className="form-input"
                   />
-                </label>
-                <label>
-                  Performed by
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Performed by</label>
                   <input
                     name="performed_by" value={form.performed_by} onChange={updateField}
-                    required placeholder="Mechanic or garage name" style={fieldStyle}
+                    required placeholder="Mechanic or garage name" className="form-input"
                   />
-                </label>
-                <label>
-                  Cost
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Cost</label>
                   <input
                     name="cost" type="number" min="0" step="0.01"
-                    value={form.cost} onChange={updateField} style={fieldStyle}
+                    value={form.cost} onChange={updateField} className="form-input"
                   />
-                </label>
-                <label>
-                  Date performed
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Date performed</label>
                   <input
                     name="date_performed" type="date"
-                    value={form.date_performed} onChange={updateField} style={fieldStyle}
+                    value={form.date_performed} onChange={updateField} className="form-input"
                   />
-                </label>
+                </div>
               </>
             )}
 
@@ -214,9 +205,14 @@ const Alerts = () => {
               <p style={{ color: "var(--color-danger)", fontSize: 13 }}>{formError}</p>
             )}
 
-            <div style={{ display: "flex", gap: "0.5rem", justifyContent: "flex-end" }}>
-              <button type="button" onClick={closeResolve}>Cancel</button>
-              <button type="submit" disabled={saving}>
+            <div style={{ display: "flex", gap: 8, marginTop: "0.5rem" }}>
+              <button type="button" className="confirm-btn" onClick={closeResolve}>
+                Cancel
+              </button>
+              <button
+                type="submit" className="add-btn" disabled={saving}
+                style={{ flex: 1, justifyContent: "center" }}
+              >
                 {saving ? "Saving..." : "Save resolution"}
               </button>
             </div>

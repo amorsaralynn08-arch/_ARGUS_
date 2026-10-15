@@ -450,3 +450,20 @@ a {
   padding: 0;
 }
 .link-btn:hover { color: var(--color-primary-hover); }
+
+.form-group { margin-bottom: 12px; }
+.form-label { display: block; font-size: 12px; color: var(--color-text-secondary); margin-bottom: 4px; }
+.form-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  background: var(--color-background);
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  box-sizing: border-box;
+}
+.form-input:focus { outline: none; border-color: var(--color-primary); }
+.form-input option { background: var(--color-surface); color: var(--color-text-primary); }
+.add-btn:disabled { opacity: 0.6; cursor: not-allowed; }
