@@ -59,6 +59,7 @@ class AlertViewSet(
     mixins.RetrieveModelMixin,
     viewsets.GenericViewSet,
 ):
+    serializer_class = AlertSerializer
     
     def get_queryset(self):
         user = self.request.user

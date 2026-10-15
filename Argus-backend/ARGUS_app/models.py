@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
+
 # Create your models here.
 
 class Company(models.Model):
@@ -160,10 +162,10 @@ class MaintenanceRecord(models.Model):
     )
      created_at = models.DateTimeField(auto_now_add=True)
 
-class Meta:
+     class Meta:
         ordering = ["-date_performed"]
 
-def __str__(self):
+     def __str__(self):
         return f"{self.vehicle.registration_number} — {self.service_type} ({self.date_performed})"
 
 class Message(models.Model):

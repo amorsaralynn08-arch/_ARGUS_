@@ -16,8 +16,8 @@ class SensorReadingSerializer(serializers.ModelSerializer):
         read_only_fields = ["created_at", "health_score", "health_status"]
 
     def validate_temperature(self,value):
-         if value < -40 or value >150:
-          raise serializers.ValidationError("Temperature must be within the 40°C and 150°C threshhold")
+         if value < -40 or value > 150:
+          raise serializers.ValidationError("Temperature must be within the -40°C and 150°C threshhold")
          return value
 
     def validate_vibration(self,value):
