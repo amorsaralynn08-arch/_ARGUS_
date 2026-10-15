@@ -72,3 +72,18 @@ class CanManageUsers(BasePermission):
                 User.Role.FLEET_MANAGER,
             ]
         )
+
+import secrets
+from django.conf import settings
+from rest_framework.permissions import BasePermission
+
+
+class HasDeviceKey(BasePermission):
+    """Lets a device in only if it sends the right secret key."""
+
+    def has_permission(self, request, view):
+        sent_key = request.headers.get("X-API-Key", "")
+        real_key = settings.DEVICE_API_KEY
+        return bool(real_key) and secrets.compare_digest(
+            sent_key.encode(), real_key.encode()
+        )
