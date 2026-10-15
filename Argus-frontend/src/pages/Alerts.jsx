@@ -29,6 +29,19 @@ const Alerts = () => {
     load();
   }, []);
 
+    const resolveAlert = async (id) => {
+    try {
+      await api.post(`alerts/${id}/resolve/`);
+      setAlerts((prev) =>
+        prev.map((a) => (a.id === id ? { ...a, is_resolved: true } : a))
+      );
+    } catch (err) {
+      console.error("Failed to resolve alert:", err);
+      
+    }
+  };
+
+
    const { user } = useAuth();
    
   return (
@@ -38,8 +51,8 @@ const Alerts = () => {
       </h1>
 
       <div className="vehicle-table">
-        <div className="table-row table-head" style={{ gridTemplateColumns: "0.8fr 1.5fr 2fr 1fr" }}>
-          <div>Severity</div><div>Vehicle</div><div>Message</div><div>Time</div>
+        <div className="table-row table-head" style={{ gridTemplateColumns: "0.8fr 1.5fr 2fr 1fr 0.8fr" }}>
+          <div>Severity</div><div>Vehicle</div><div>Message</div><div>Time</div><div>Action</div>
         </div>
 
         {loading ? (
@@ -51,13 +64,27 @@ const Alerts = () => {
             <div
               className="table-row"
               key={a.id}
-              style={{ gridTemplateColumns: "0.8fr 1.5fr 2fr 1fr", cursor: "pointer" }}
+              style={{ gridTemplateColumns: "0.8fr 1.5fr 2fr 1fr 0.8fr", cursor: "pointer" }}
               onClick={() => navigate(`${getHomeRouteForRole(user?.role)}/vehicles/${a.vehicle.id}`)}
             >
               <div style={{ color: severityStyles[a.severity] || "var(--color-text-primary)", fontWeight: 500 }}>{a.severity}</div>
               <div>{a.vehicle.manufacturer} {a.vehicle.model} · {a.vehicle.registration_number}</div>
               <div>{a.message}</div>
               <div style={{ color: "var(--color-text-secondary)", fontSize: 12 }}>{new Date(a.created_at).toLocaleString()}</div>
+                            <div>
+                {a.is_resolved ? (
+                  <span style={{ color: "var(--color-text-secondary)", fontSize: 12 }}>Resolved ✓</span>
+                ) : (
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      resolveAlert(a.id);
+                    }}
+                  >
+                    Resolve
+                  </button>
+                )}
+              </div>
             </div>
           ))
         )}

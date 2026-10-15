@@ -2,6 +2,7 @@
 from pyclbr import Class
 
 from rest_framework import viewsets,mixins
+from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import PermissionDenied
 from .models import MaintenanceRecord, SensorReading , Alert , Vehicle ,Company,User,Message
@@ -73,6 +74,14 @@ class AlertViewSet(
     permission_classes = [CanManageAlerts]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ["sensor_reading__vehicle","is_resolved"]
+
+
+    @action(detail=True, methods=["post"])
+    def resolve(self, request, pk=None):
+        alert = self.get_object()
+        alert.is_resolved = True
+        alert.save()
+        return Response(AlertSerializer(alert).data)
 
     
 class TestEmailView(APIView):
