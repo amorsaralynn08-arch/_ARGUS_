@@ -136,6 +136,22 @@ class Alert(models.Model):
     alert_type = models.CharField(max_length=50 , choices=AlertType.choices)
     message = models.TextField()
     is_resolved = models.BooleanField(default=False)
+    resolved_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="resolved_alerts",
+    )
+    resolved_at = models.DateTimeField(null=True, blank=True)
+    resolution_note = models.TextField(blank=True)
+    maintenance_record = models.ForeignKey(
+        "MaintenanceRecord",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="alerts",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     @property
