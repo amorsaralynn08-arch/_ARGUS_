@@ -58,9 +58,20 @@ class AlertSerializer(serializers.ModelSerializer):
             "alert_type",
             "message",
             "is_resolved",
+            "resolved_by",
+            "resolved_at",
+            "resolution_note",
+            "maintenance_record",
             "created_at",
         ]
-        read_only_fields = ["created_at"]
+        read_only_fields = [
+            "created_at",
+            "resolved_by",
+            "resolved_at",
+            "resolution_note",
+            "maintenance_record",
+        ]
+
 
     def get_vehicle(self, obj):
         v = obj.sensor_reading.vehicle
@@ -71,6 +82,27 @@ class AlertSerializer(serializers.ModelSerializer):
             "model": v.model,
         }    
 
+class AlertResolveSerializer(serializers.Serializer):
+    OUTCOMES = [("FIXED", "Fixed"), ("FALSE_ALARM", "False alarm")]
+
+    outcome = serializers.ChoiceField(choices=OUTCOMES)
+    note = serializers.CharField(max_length=2000)
+    service_type = serializers.CharField(max_length=100, required=False)
+    performed_by = serializers.CharField(max_length=100, required=False)
+    cost = serializers.DecimalField(
+        max_digits=10, decimal_places=2, required=False, allow_null=True, min_value=0
+    )
+    date_performed = serializers.DateField(required=False)
+
+    def validate(self, data):
+        if data["outcome"] == "FIXED":
+            missing = {}
+            for field in ("service_type", "performed_by"):
+                if not data.get(field):
+                    missing[field] = "This field is required when the outcome is Fixed."
+            if missing:
+                raise serializers.ValidationError(missing)
+        return data
 
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
