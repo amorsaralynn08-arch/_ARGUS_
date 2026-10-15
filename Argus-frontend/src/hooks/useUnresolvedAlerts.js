@@ -14,9 +14,14 @@ const useUnresolvedAlerts = () => {
         console.error("Failed to load alert count:", err);
       }
     };
-    fetchCount();
-    const interval = setInterval(fetchCount, 30000); // refresh every 30s
-    return () => clearInterval(interval);
+        fetchCount();
+    const interval = setInterval(fetchCount, 30000);
+    window.addEventListener("alerts-changed", fetchCount);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener("alerts-changed", fetchCount);
+    };
+    
   }, []);
 
   return count;

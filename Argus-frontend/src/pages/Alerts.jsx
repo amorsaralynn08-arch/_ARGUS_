@@ -29,15 +29,15 @@ const Alerts = () => {
     load();
   }, []);
 
-    const resolveAlert = async (id) => {
+  const resolveAlert = async (id) => {
     try {
       await api.post(`alerts/${id}/resolve/`);
       setAlerts((prev) =>
         prev.map((a) => (a.id === id ? { ...a, is_resolved: true } : a))
       );
+      window.dispatchEvent(new Event("alerts-changed"));
     } catch (err) {
       console.error("Failed to resolve alert:", err);
-      
     }
   };
 
