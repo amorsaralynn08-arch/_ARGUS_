@@ -20,6 +20,7 @@ from .serializers import (
     ResetPasswordConfirmSerializer,
     MaintenanceRecordSerializer,
     MessageSerializer,
+    AlertResolveSerializer,
 )
 from .permissions import CanManageAlerts , CanViewSensorReadings , CanManageVehicles , CanManageCompanies , CanManageUsers , HasDeviceKey
 from .utils import send_test_email,send_password_changed_email,send_password_reset_email,send_password_reset_success_email
@@ -34,6 +35,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.conf import settings
 from django.db.models import Q
+from django.db import transaction
+from django.utils import timezone
 
 # Create your views here.
 class SensorReadingView(
@@ -79,8 +82,40 @@ class AlertViewSet(
     @action(detail=True, methods=["post"])
     def resolve(self, request, pk=None):
         alert = self.get_object()
-        alert.is_resolved = True
-        alert.save()
+
+        if request.user.role == User.Role.DRIVER:
+            raise PermissionDenied("Drivers cannot resolve alerts.")
+
+        if alert.is_resolved:
+            return Response(
+                {"detail": "This alert is already resolved."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        form = AlertResolveSerializer(data=request.data)
+        form.is_valid(raise_exception=True)
+        data = form.validated_data
+
+        with transaction.atomic():
+            record = None
+            if data["outcome"] == "FIXED":
+                record = MaintenanceRecord.objects.create(
+                    vehicle=alert.vehicle,
+                    service_type=data["service_type"],
+                    description=data["note"],
+                    performed_by=data["performed_by"],
+                    cost=data.get("cost"),
+                    date_performed=data.get("date_performed") or timezone.localdate(),
+                    logged_by=request.user,
+                )
+
+            alert.is_resolved = True
+            alert.resolved_by = request.user
+            alert.resolved_at = timezone.now()
+            alert.resolution_note = data["note"]
+            alert.maintenance_record = record
+            alert.save()
+
         return Response(AlertSerializer(alert).data)
 
     
