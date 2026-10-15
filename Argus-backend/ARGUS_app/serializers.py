@@ -45,11 +45,15 @@ class SensorReadingSerializer(serializers.ModelSerializer):
 
 
 class AlertSerializer(serializers.ModelSerializer):
+    vehicle = serializers.SerializerMethodField()
+
+
     class Meta:
         model = Alert
         fields = [
             "id",
             "sensor_reading",
+            "vehicle",
             "severity",
             "alert_type",
             "message",
