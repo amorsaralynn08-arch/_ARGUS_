@@ -467,3 +467,33 @@ a {
 .form-input:focus { outline: none; border-color: var(--color-primary); }
 .form-input option { background: var(--color-surface); color: var(--color-text-primary); }
 .add-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+@supports (appearance: base-select) {
+  select.form-input,
+  select.form-input::picker(select) {
+    appearance: base-select;
+  }
+
+  select.form-input::picker(select) {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    padding: 4px;
+  }
+
+  select.form-input option {
+    padding: 8px 10px;
+    border-radius: 4px;
+    color: var(--color-text-primary);
+  }
+
+  select.form-input option:hover,
+  select.form-input option:focus {
+    background: var(--color-surface-secondary);
+  }
+
+  select.form-input option:checked {
+    background: rgba(123, 97, 255, 0.08);
+    color: var(--color-primary);
+  }
+}
