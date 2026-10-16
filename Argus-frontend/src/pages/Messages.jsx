@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { Send } from "lucide-react";
+import { Send , X } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
 const formatTime = (iso) => new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -95,7 +95,19 @@ useEffect(() => {
           <div className="table-empty">{isFleetManager ? "Select a team member to message." : "No fleet manager found."}</div>
         ) : (
           <>
-            <div className="conversation-header">{activeContact.name}</div>
+            <div className="conversation-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>{activeContact.name}</span>
+              {isFleetManager && (
+                <button
+                  type="button"
+                  className="modal-close"
+                  title="Close chat"
+                  onClick={() => { setActiveContact(null); setMessages([]); }}
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
             <div className="conversation-body">
               {messages.map((m) => {
                 const isOwn = m.sender === user.id;

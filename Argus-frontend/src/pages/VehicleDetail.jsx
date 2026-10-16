@@ -37,6 +37,7 @@ const VehicleDetail = () => {
   const [assigningDriver, setAssigningDriver] = useState(false);
   const [assignError, setAssignError] = useState(null);
   const [showSimulateModal, setShowSimulateModal] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   const handleGetRecommendation = async () => {
     setAiLoading(true);
@@ -83,6 +84,16 @@ const reloadReadingsAndAlerts = async () => {
     setAlerts(Array.isArray(data) ? data : data.results || []);
   } catch (err) {}
 };
+
+const refreshLive = async () => {
+  if (document.hidden) return;
+  try {
+    const { data } = await api.get(`vehicles/${id}/`);
+    setVehicle(data);
+  } catch (err) {}
+  await reloadReadingsAndAlerts();
+  setLastUpdated(new Date());
+};
   
   useEffect(() => {
     const load = async () => {
@@ -125,6 +136,11 @@ const reloadReadingsAndAlerts = async () => {
       });
     }
   }, [isFleetManager]);
+
+  useEffect(() => {
+    const timer = setInterval(refreshLive, 5000);
+    return () => clearInterval(timer);
+  }, [id]);
 
   // Early returns now happen AFTER every hook has run
   if (loading) return <div>Loading...</div>;
@@ -179,12 +195,22 @@ const reloadReadingsAndAlerts = async () => {
       </div>
       </div>
 
-      <h2 className="section-title">Recent readings</h2>
+      <h2 className="section-title">
+        Recent readings
+        {lastUpdated && (
+          <span style={{ marginLeft: 10, fontSize: 11, fontWeight: 400, color: "var(--color-success)" }}>
+            ● Live · updated {lastUpdated.toLocaleTimeString()}
+          </span>
+        )}
+      </h2>
       {latestReading ? (
         <div className="reading-grid">
           <div><span>Temperature</span><div>{latestReading.temperature}°C</div></div>
           <div><span>Vibration</span><div>{latestReading.vibration}</div></div>
           <div><span>Potentiometer</span><div>{latestReading.potentiometer_value}</div></div>
+          <div><span>Health score</span><div>{latestReading.health_score}</div></div>
+          <div><span>Status</span><div>{latestReading.health_status}</div></div>
+          <div><span>Received</span><div>{new Date(latestReading.created_at).toLocaleTimeString()}</div></div>
         </div>
       ) : (
         <div className="table-empty">No sensor readings yet.</div>
