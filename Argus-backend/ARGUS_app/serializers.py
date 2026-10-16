@@ -5,7 +5,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 import re
-from .health_scoring import compute_health, create_alerts_for_reading
+from .health_scoring import compute_health, create_alerts_for_reading, update_vehicle_status
 class SensorReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = SensorReading
@@ -41,6 +41,7 @@ class SensorReadingSerializer(serializers.ModelSerializer):
 
         reading = super().create(validated_data)
         create_alerts_for_reading(reading, statuses, score)
+        update_vehicle_status(reading.vehicle, status)
         return reading
 
 

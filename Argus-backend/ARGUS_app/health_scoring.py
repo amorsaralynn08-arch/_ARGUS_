@@ -1,10 +1,8 @@
 """
 Health scoring logic for incoming sensor readings.
-
-
 """
 
-from .models import Alert
+from .models import Alert, Vehicle
 
 
 TEMPERATURE_WARNING = 70     # °C
@@ -48,32 +46,76 @@ def compute_health(temperature, vibration, potentiometer_value):
     return score, overall_status, statuses
 
 
+def _open_alert_exists(vehicle, alert_type, severity):
+    """True if this vehicle already has an unresolved alert of the same kind and severity."""
+    return Alert.objects.filter(
+        sensor_reading__vehicle=vehicle,
+        alert_type=alert_type,
+        severity=severity,
+        is_resolved=False,
+    ).exists()
+
+
+def _create_alert_once(sensor_reading, alert_type, severity, message):
+    """Creates the alert only if the same one isn't already open."""
+    if _open_alert_exists(sensor_reading.vehicle, alert_type, severity):
+        return None
+    return Alert.objects.create(
+        sensor_reading=sensor_reading,
+        severity=severity,
+        alert_type=alert_type,
+        message=message,
+    )
+
+
 def create_alerts_for_reading(sensor_reading, statuses, score):
-    """Creates one Alert per metric that tripped a threshold."""
+    """Creates one Alert per metric that tripped a threshold (no duplicates)."""
     created = []
+    plate = sensor_reading.vehicle.registration_number
 
     if statuses["temperature"] != "NORMAL":
-        created.append(Alert.objects.create(
-            sensor_reading=sensor_reading,
-            severity=statuses["temperature"],
-            alert_type=Alert.AlertType.HIGH_TEMPERATURE,
-            message=f"High temperature reading for {sensor_reading.vehicle.registration_number}.",
-        ))
+        alert = _create_alert_once(
+            sensor_reading,
+            Alert.AlertType.HIGH_TEMPERATURE,
+            statuses["temperature"],
+            f"High temperature reading for {plate}.",
+        )
+        if alert:
+            created.append(alert)
 
     if statuses["vibration"] != "NORMAL":
-        created.append(Alert.objects.create(
-            sensor_reading=sensor_reading,
-            severity=statuses["vibration"],
-            alert_type=Alert.AlertType.HIGH_VIBRATION,
-            message=f"High vibration reading for {sensor_reading.vehicle.registration_number}.",
-        ))
+        alert = _create_alert_once(
+            sensor_reading,
+            Alert.AlertType.HIGH_VIBRATION,
+            statuses["vibration"],
+            f"High vibration reading for {plate}.",
+        )
+        if alert:
+            created.append(alert)
 
     if statuses["potentiometer"] != "NORMAL" and score < SCORE_ALERT_THRESHOLD:
-        created.append(Alert.objects.create(
-            sensor_reading=sensor_reading,
-            severity=statuses["potentiometer"],
-            alert_type=Alert.AlertType.LOW_HEALTH_SCORE,
-            message=f"Overall health score dropped for {sensor_reading.vehicle.registration_number}.",
-        ))
+        alert = _create_alert_once(
+            sensor_reading,
+            Alert.AlertType.LOW_HEALTH_SCORE,
+            statuses["potentiometer"],
+            f"Overall health score dropped for {plate}.",
+        )
+        if alert:
+            created.append(alert)
 
     return created
+
+
+def update_vehicle_status(vehicle, overall_status):
+    """Flips the vehicle to CRITICAL on a critical reading, and back to ACTIVE when it recovers."""
+    if vehicle.status == Vehicle.Status.MAINTENANCE:
+        return  # a vehicle in the workshop stays in the workshop
+
+    if overall_status == "CRITICAL":
+        new_status = Vehicle.Status.CRITICAL
+    else:
+        new_status = Vehicle.Status.ACTIVE
+
+    if vehicle.status != new_status:
+        vehicle.status = new_status
+        vehicle.save(update_fields=["status"])
