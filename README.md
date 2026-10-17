@@ -182,6 +182,3 @@ The project is intended for educational and engineering purposes. It is not a ce
 
 **Saralynn Amor**
 
-**Project:** ARGUS — Automated Risk & Guard Unified System
-
-**Repository:** [GitHub — ARGUS](https://github.com/amorsaralynn08-arch/_ARGUS_)
