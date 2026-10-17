@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 const statusStyles = {
   ACTIVE: { label: "Normal", color: "var(--color-success)" },
   MAINTENANCE: { label: "Maintenance", color: "var(--color-warning)" },
+  WARNING: { label: "Warning", color: "var(--color-warning)" },
   CRITICAL: { label: "Critical", color: "var(--color-danger)" },
   OFFLINE: { label: "Offline", color: "var(--color-text-secondary)" },
 };
