@@ -1,15 +1,20 @@
 import { useState, useEffect, useRef } from "react";
 import api from "../api/axios";
 import { useAuth } from "../context/AuthContext";
-import { Send , X } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { Send, X, ArrowLeft } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getHomeRouteForRole } from "../utils/roleRoutes";
 
 const formatTime = (iso) => new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
 const Messages = () => {
   const { user } = useAuth();
   const location = useLocation();
-  
+  const navigate = useNavigate();
+
+  const closeMessages = () =>
+    navigate(location.state?.from || getHomeRouteForRole(user?.role));
+
 useEffect(() => {
   if (location.state?.prefill) setText(location.state.prefill);
 }, [location.state]);
@@ -71,7 +76,17 @@ useEffect(() => {
   if (loading) return <div className="table-empty">Loading...</div>;
 
   return (
-    <div className="messages-shell">
+    <div className="messages-shell" style={{ position: "relative" }}>
+      <button
+        type="button"
+        className="modal-close"
+        title="Close messages"
+        onClick={closeMessages}
+        style={{ position: "absolute", top: 12, right: 14, zIndex: 2 }}
+      >
+        <X size={18} />
+      </button>
+
       {isFleetManager && (
         <div className="messages-contacts">
           {contacts.length === 0 ? (
@@ -95,18 +110,18 @@ useEffect(() => {
           <div className="table-empty">{isFleetManager ? "Select a team member to message." : "No fleet manager found."}</div>
         ) : (
           <>
-            <div className="conversation-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-              <span>{activeContact.name}</span>
+            <div className="conversation-header" style={{ display: "flex", alignItems: "center", gap: 10, paddingRight: 48 }}>
               {isFleetManager && (
                 <button
                   type="button"
                   className="modal-close"
-                  title="Close chat"
+                  title="Back to contacts"
                   onClick={() => { setActiveContact(null); setMessages([]); }}
                 >
-                  <X size={16} />
+                  <ArrowLeft size={16} />
                 </button>
               )}
+              <span>{activeContact.name}</span>
             </div>
             <div className="conversation-body">
               {messages.map((m) => {
