@@ -93,12 +93,13 @@ def create_alerts_for_reading(sensor_reading, statuses, score):
         if alert:
             created.append(alert)
 
-    if statuses["potentiometer"] != "NORMAL" and score < SCORE_ALERT_THRESHOLD:
+            
+    if statuses["potentiometer"] != "NORMAL":
         alert = _create_alert_once(
             sensor_reading,
             Alert.AlertType.LOW_HEALTH_SCORE,
             statuses["potentiometer"],
-            f"Overall health score dropped for {plate}.",
+            f"Health score dropped to {score:.0f} for {plate}.",
         )
         if alert:
             created.append(alert)
@@ -113,6 +114,8 @@ def update_vehicle_status(vehicle, overall_status):
 
     if overall_status == "CRITICAL":
         new_status = Vehicle.Status.CRITICAL
+    elif overall_status == "WARNING":
+        new_status = Vehicle.Status.WARNING
     else:
         new_status = Vehicle.Status.ACTIVE
 
