@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import FormInput from "../components/FormInput";
 import ScatteredEyes from "../components/ScatteredEyes";
 import { Eye, Lock } from "lucide-react";
-import "../styles/home.css";
+import "../styles/Home.css";
 
 const validators = {
   username: (v) => (!v ? "Username is required." : v.length < 3 ? "Too short." : ""),
