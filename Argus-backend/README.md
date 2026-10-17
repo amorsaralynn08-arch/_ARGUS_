@@ -1,411 +1,246 @@
-# ARGUS
-### Automated Risk & Guard Unified System
+# ARGUS Backend
+### Django REST API | Automated Risk & Guard Unified System
 
-ARGUS is a full-stack Industrial IoT (IIoT) condition monitoring and automated safety system designed to monitor machine health, detect potential faults, and provide real-time operational insights.
+The ARGUS backend is the server-side component of ARGUS, an Industrial Internet of Things (IIoT) condition monitoring and automated safety system.
 
-The system integrates IoT sensors, a Django REST API backend, and a React frontend to simulate modern predictive maintenance solutions used in manufacturing, automation, and industrial environments.
+Built with **Python, Django, and Django REST Framework**, it provides the API layer responsible for handling application requests, managing data, processing machine monitoring information, and communicating with the ARGUS frontend and, as integration progresses, IoT hardware.
 
----
+## Overview
 
-# Overview
+The backend acts as the central processing and data management layer of ARGUS. It exposes RESTful API endpoints that allow the frontend to interact with backend services without directly accessing the database.
 
-ARGUS continuously collects sensor readings such as temperature, vibration, and load values from either simulated data or physical hardware. The backend processes these readings, stores them in a database, evaluates overall machine health, and exposes the processed information through RESTful APIs.
+The backend is designed to support:
 
-The React frontend consumes these APIs to display interactive dashboards, live sensor metrics, machine health scores, alerts, and historical trends.
+- User registration and authentication
+- User profile management
+- Vehicle and machine-related data management
+- Sensor data collection and storage
+- Machine health assessment
+- Alert generation and resolution
+- Historical monitoring data
+- Future integration with ESP32-based hardware
 
-The project is designed with scalability in mind, allowing future integration with cloud services, machine learning models, and industrial IoT devices.
+Features are developed incrementally as the project progresses.
 
----
+## Technology Stack
 
-# Features
+| Technology | Purpose |
+|---|---|
+| Python | Backend programming language |
+| Django | Web framework |
+| Django REST Framework | REST API development |
+| PostgreSQL | Relational database |
+| Django CORS Headers | Cross-origin request support |
+| DRF Spectacular | OpenAPI schema and API documentation |
+| Python Decouple | Environment variable configuration |
+| Django Filter | API filtering |
 
-## Current
+## Architecture
 
-- RESTful API built with Django REST Framework
-- Structured backend architecture
-- Machine health data management
-- Sensor data storage
-- Database integration
-- API documentation
-- Cross-Origin Resource Sharing (CORS) support
-- Environment variable configuration
-
-## Planned
-
-- Real-time sensor monitoring
-- Machine health scoring system
-- Risk level classification (Normal / Warning / Critical)
-- Live alert generation
-- Interactive React dashboard
-- Predictive maintenance recommendations
-- User authentication and authorization
-- Historical analytics
-- AI-assisted anomaly detection
-- Cloud deployment
-- Hardware integration with ESP32 / Arduino
-
----
-
-# System Architecture
-
-```
-                 +----------------------+
-                 |  ESP32 / Arduino     |
-                 |  Sensors             |
-                 +----------+-----------+
-                            |
-                            |
-                            v
-                 +----------------------+
-                 | Django REST API      |
-                 | (Backend)            |
-                 +----------+-----------+
-                            |
-             PostgreSQL Database
-                            |
-                            |
-                            v
-                 +----------------------+
-                 | React Dashboard      |
-                 | (Frontend)           |
-                 +----------------------+
+```text
+React Frontend / IoT Hardware
+             |
+             | HTTP / REST API
+             v
+      Django REST Framework
+             |
+             v
+       Django Application
+             |
+             v
+          Database
 ```
 
----
+The frontend communicates with the backend through API endpoints. Hardware integration is intended to enable sensor readings to enter the same monitoring workflow.
 
-# Technology Stack
+## Project Structure
 
-## Backend
-
-- Python
-- Django
-- Django REST Framework
-- PostgreSQL
-- Django CORS Headers
-- DRF Spectacular (OpenAPI Documentation)
-- Python Decouple
-- Django Filter
-
-## Frontend (Coming Soon)
-
-- React
-- Vite
-- JavaScript
-- React Router
-- Recharts
-- Framer Motion
-
-## Hardware (Future)
-
-- ESP32
-- Arduino
-- Temperature Sensor
-- Vibration Sensor
-- Potentiometer
-- Buzzer
-- LEDs
-
----
-
-# Project Structure
-
-The repository will eventually contain both the backend and frontend applications.
-
-```
-_ARGUS_/
-│
-├── backend/
-│   ├── apps/
-│   ├── config/
-│   ├── manage.py
-│   ├── requirements.txt
-│   ├── .env
+```text
+Argus-backend/
+├── apps/
+│   ├── authentication/
+│   ├── vehicles/
+│   ├── alerts/
 │   └── ...
-│
-├── frontend/                 # Coming Soon
-│
-├── README.md
-├── LICENSE
-└── .gitignore
+├── config/
+├── manage.py
+├── requirements.txt
+├── .env
+└── README.md
 ```
 
----
+*The application names and layout above are illustrative. Keep this tree aligned with the actual repository structure.*
 
-# Backend Setup
+## Prerequisites
 
-## 1. Clone the Repository
-
-```bash
-git clone https://github.com/amorsaralynn08-arch/_ARGUS_.git
-```
-
-Move into the project directory.
-
-```bash
-cd _ARGUS_
-```
-
-Move into the backend folder.
-
-```bash
-cd Argus-backend
-```
-
----
-
-# Python Requirements
-
-Before running the project, ensure the following are installed:
+Install the following before setting up the backend:
 
 - Python 3.12 or newer
+- pip
 - Git
-- PostgreSQL (recommended)
-- pip (Python package manager)
+- PostgreSQL, if using the PostgreSQL configuration
 
-Verify installation:
+Verify your Python installation:
 
 ```bash
 python --version
 ```
 
-or
+## Installation and Setup
+
+Run the following commands from the repository root.
+
+### 1. Enter the backend directory
 
 ```bash
-python3 --version
+cd Argus-backend
 ```
 
----
+### 2. Create a virtual environment
 
-# Virtual Environment
-
-Creating a virtual environment is highly recommended to isolate project dependencies.
-
-## Windows (Command Prompt)
-
-```cmd
+```bash
 python -m venv venv
 ```
 
-Activate:
+Activate it using the appropriate command.
+
+**Windows — Command Prompt**
 
 ```cmd
 venv\Scripts\activate
 ```
 
----
-
-## Windows (PowerShell)
-
-```powershell
-python -m venv venv
-```
-
-Activate:
+**Windows — PowerShell**
 
 ```powershell
 venv\Scripts\Activate.ps1
 ```
 
-If PowerShell prevents activation:
-
-```powershell
-Set-ExecutionPolicy -Scope Process RemoteSigned
-```
-
----
-
-## Windows (Git Bash)
-
-```bash
-python -m venv venv
-```
-
-Activate:
-
-```bash
-source venv/Scripts/activate
-```
-
----
-
-## macOS
-
-```bash
-python3 -m venv venv
-```
-
-Activate:
+**macOS / Linux**
 
 ```bash
 source venv/bin/activate
 ```
 
----
-
-## Linux
-
-```bash
-python3 -m venv venv
-```
-
-Activate:
-
-```bash
-source venv/bin/activate
-```
-
----
-
-# Upgrade pip
+### 3. Install dependencies
 
 ```bash
 python -m pip install --upgrade pip
-```
-
-
-Generate the requirements file.
-
-```bash
-pip freeze > requirements.txt
-```
-
-Install dependancies from the requirements file.
-
-```bash
 pip install -r requirements.txt
 ```
 
----
+### 4. Configure environment variables
 
-# Environment Variables
+Create a `.env` file in the backend directory and provide the configuration required by the Django settings.
 
-Create a `.env` file inside the backend directory.
-
-Example:
+Example for a local PostgreSQL database:
 
 ```env
-SECRET_KEY=your_secret_key_here
-
+SECRET_KEY=your_secret_key
 DEBUG=True
 
 DB_NAME=argus_db
 DB_USER=postgres
-DB_PASSWORD=your_password
+DB_PASSWORD=your_database_password
 DB_HOST=localhost
 DB_PORT=5432
 ```
 
-Never commit the `.env` file.
+These names are examples; use the exact variable names expected by the project's settings.
 
-The `.env` file should remain listed inside `.gitignore`.
+**Security:** Never commit real secrets, passwords, or production credentials to version control. Keep `.env` excluded through `.gitignore`.
 
----
+### 5. Prepare the database
 
-# Database Setup
-
-Create a PostgreSQL database.
-
-Example:
-
-```
-Database Name:
-argus_db
-```
-
-Update the database credentials inside the `.env` file.
-
----
-
-# Apply Database Migrations
-
-```bash
-python manage.py makemigrations
-```
+Create the PostgreSQL database configured in your environment variables, then apply the migrations:
 
 ```bash
 python manage.py migrate
 ```
 
----
+If you have changed Django models and need to generate migrations, run:
 
-# Create an Administrator Account
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 6. Create an administrator account
 
 ```bash
 python manage.py createsuperuser
 ```
 
-Follow the prompts to create the administrator credentials.
+Follow the prompts to create the account.
 
----
-
-# Run the Development Server
+### 7. Start the development server
 
 ```bash
 python manage.py runserver
 ```
 
-The backend will be available at:
+The local development server runs at:
 
-```
-http://127.0.0.1:8000/
-```
+`http://127.0.0.1:8000/`
 
----
+## API Documentation
 
-# API Documentation
+When the API documentation routes are configured, access them at:
 
-Interactive API documentation will be available after configuration.
+- **Swagger UI:** `http://127.0.0.1:8000/api/docs/`
+- **OpenAPI schema:** `http://127.0.0.1:8000/api/schema/`
 
-Swagger UI
+These routes may differ depending on the project's URL configuration.
 
-```
-http://127.0.0.1:8000/api/docs/
-```
+## API Responsibilities
 
-OpenAPI Schema
+The backend provides the foundation for the following application workflows:
 
-```
-http://127.0.0.1:8000/api/schema/
-```
+### Authentication and User Management
 
----
+Handles user-related requests, authentication, and profile access through API endpoints.
 
+### Vehicle and Machine Management
 
+Provides the application layer for managing monitored assets and their associated information.
 
----
+### Monitoring and Sensor Data
 
-# Frontend
+Supports the storage and processing of machine monitoring data, with physical sensor integration being developed as part of the wider ARGUS system.
 
-The React frontend will be added during a later phase of development.
+### Alerts and Maintenance
 
-Once implemented, it will communicate with the Django backend through the REST API.
+Supports the alert-management workflow, including the tracking and resolution of detected issues as these features are implemented.
 
-The frontend directory and setup instructions will be added as development progresses.
+## Development Guidelines
 
----
+- Keep business logic separate from request handling where appropriate.
+- Validate incoming API data before processing or storing it.
+- Use environment variables for sensitive configuration.
+- Apply database migrations whenever model changes require them.
+- Maintain consistent API response formats and meaningful HTTP status codes.
+- Test API endpoints before integrating them with the frontend.
+- Never commit virtual environments, database credentials, or secret keys.
 
-# Development Workflow
+## Running Tests
 
-1. ESP32 or simulated sensors generate readings.
-2. Django receives the data through REST API endpoints.
-3. Sensor readings are validated and stored in PostgreSQL.
-4. Machine health is calculated.
-5. Risk levels and alerts are generated.
-6. React retrieves processed data through the API.
-7. Users monitor system status from the dashboard.
+Run the Django test suite with:
 
----
-## if you wish to clone or contribute to the project
-```
-https://github.com/amorsaralynn08-arch/_ARGUS_/
-
+```bash
+python manage.py test
 ```
 
+Add application-specific tests as backend functionality expands.
 
-Amor
+## Related Documentation
 
----
+For the complete project overview, system architecture, hardware plans, and full-stack development roadmap, see the main repository's `README.md`.
 
-# License
+## Project
 
-This project is licensed under the MIT License.
+**ARGUS — Automated Risk & Guard Unified System**
+
+Developed by Amor.
+
+Repository: https://github.com/amorsaralynn08-arch/_ARGUS_
+
