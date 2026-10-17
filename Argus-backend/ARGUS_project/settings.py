@@ -155,6 +155,8 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "https://argus-frontend-hnln.onrender.com",
+
 ]
 
 REST_FRAMEWORK = {
