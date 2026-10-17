@@ -42,6 +42,8 @@ const Alerts = () => {
       }
     };
     load();
+    const timer = setInterval(load, 5000);
+    return () => clearInterval(timer);
   }, []);
 
   const openResolve = (alert) => {

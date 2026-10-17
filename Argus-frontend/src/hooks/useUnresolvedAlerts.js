@@ -15,7 +15,7 @@ const useUnresolvedAlerts = () => {
       }
     };
         fetchCount();
-    const interval = setInterval(fetchCount, 30000);
+    const interval = setInterval(fetchCount, 10000);
     window.addEventListener("alerts-changed", fetchCount);
     return () => {
       clearInterval(interval);

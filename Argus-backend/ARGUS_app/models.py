@@ -74,6 +74,7 @@ class Vehicle(models.Model):
     class Status(models.TextChoices):
         ACTIVE = "ACTIVE" , "Active"
         MAINTENANCE = "MAINTENANCE" , "Maintenance"
+        WARNING = "WARNING" , "Warning"
         OFFLINE = "OFFLINE" , "Offline"
         CRITICAL = "CRITICAL" , "Critical"
 
